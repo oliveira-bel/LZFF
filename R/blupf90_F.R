@@ -7,13 +7,14 @@
 #' @param md value used to indicate missing values in data file
 #' @param of name of the output file
 #' @param omd missing data value to be written in the output file
+#' @param eol end of line marker
 #'
 #' @return a data file in the appropriate format to run the software
 #' @export
 #'
 
-blupf90_F<-function(local,s,d,h=TRUE,md=c(""," ","NA"),
-                    of="blupF90_data",omd=0,eol="\n"){
+formatA<-function(local,s,d,h=TRUE,md=c(""," ","NA"),
+                    of="formatA_data",omd=0,eol="\n"){
   ok_of<-if(stringr::str_detect(of,"#")){
     stop("File name cannot contain a #. Choose a name without a #")
   }
@@ -29,7 +30,7 @@ blupf90_F<-function(local,s,d,h=TRUE,md=c(""," ","NA"),
         dados<-utils::read.table(local,header=h,sep=s,dec=d,
                                  strip.white=FALSE,na.strings = md)
       } else{
-        stop("I did not detect the type of the file. Please, provide a file name with an supported type (csv, xls, xlsx or txt.")
+        stop("I did not detect the type of the file.")
       }
     }
   }
@@ -38,9 +39,9 @@ blupf90_F<-function(local,s,d,h=TRUE,md=c(""," ","NA"),
   mapList<-list()
   for(i in 1:length(isnum)){
     if(!isnum[i]){
-      print("The data file has non-numerical values, which must be recoded. I will do a simple recode for you but the renumF90 program should be used anyway.")
       mapList<-append(mapList,list(simpleRecode(dados[,i])))
-      dados[,i]<-mapList[[i]]$Recodes
+      mapa<-match(dados[,i],mapList[[length(mapList)]]$Original_Codes)
+      dados[,i]<-mapList[[length(mapList)]]$Recodes[mapa]
     }
   }
   #Replacing NAs
