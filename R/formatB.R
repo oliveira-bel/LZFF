@@ -25,7 +25,7 @@ formatB<-function(local,s,d,h=TRUE,md=c(""," ","NA"),
   #Detectando se o arquivo contém caracteres não ASCII
   dadosTemp<-NULL
   dadosTemp<-sapply(dados, paste0, collapse = " ")
-  base::stopifnot(base::all(grepl("^[ -~]+$", dadosTemp)))
+  stopifnot(all(grepl("^[ -~]+$", dadosTemp)))
 
   name<-basename(local)
   length_name<-nchar(name)
