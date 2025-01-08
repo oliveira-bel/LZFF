@@ -13,11 +13,21 @@ formatB<-function(local,s,d,h=TRUE,md=c(""," ","NA"),
     if(tipo=="xls" || tipo=="xlsx"){
       dados<-as.data.frame(readxl::read_excel(local,na = md),col_names=h)
     } else{
-      if(tipo=="txt"|tipo==basename(local)){
-        dados<-utils::read.table(local,header=h,sep=s,dec=d,
-                                 strip.white=FALSE,na.strings = md)
-      } else{
-        stop("I did not detect the type of the file.")
+      if(tipo=="ods"){
+        dados<-as.data.frame(readODS::read_ods(local,na = md), col_names = h)
+      }else{
+        if(tipo=="gsheet"|stringr::str_detect(local,
+                                              "https://docs.google.com/spreadsheets")){
+          googlesheets4::gs4_auth()
+          dados<-as.data.frame(googlesheets4::read_sheet(local,na=md),col_names=h)
+        } else{
+          if(tipo=="txt"|tipo==basename(local)){
+            dados<-utils::read.table(local,header=h,sep=s,dec=d,
+                                     strip.white=FALSE,na.strings = md)
+          } else{
+            stop("I did not detect the type of the file.")
+          }
+        }
       }
     }
   }
