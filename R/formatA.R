@@ -14,8 +14,8 @@
 #'
 
 formatA<-function(local,s,d,h=TRUE,md=c(""," ","NA"),
-                    of="formatA_data",omd=0,eol="\n"){
-  ok_of<-if(stringr::str_detect(of,"#")){
+                    of="formatA_data",omd=0,EoL="\n"){
+  if(stringr::str_detect(of,"#")){
     stop("File name cannot contain a #. Choose a name without a #")
   }
   tipo<-stringr::str_extract(local,"(\\w+)$")
@@ -67,5 +67,5 @@ formatA<-function(local,s,d,h=TRUE,md=c(""," ","NA"),
   }
   # Writing the formated data file
   utils::write.table(dados,of,quote=FALSE,sep=" ",row.names=FALSE,
-                     col.names=FALSE,eol="\n")
+                     col.names=FALSE,eol=EoL)
 }
