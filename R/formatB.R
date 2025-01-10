@@ -1,7 +1,7 @@
 formatB<-function(local,s,d,h=TRUE,md=c(""," ","NA"),
-                  of="formatA_data",omd=0,eol="\n"){
+                  of="formatA_data",EoL="\n"){
 
-  ok_of<-if(stringr::str_detect(of,"#")){
+  if(stringr::str_detect(of,"#")){
     stop("File name cannot contain a #. Choose a name without a #")
   }
 
@@ -36,6 +36,11 @@ formatB<-function(local,s,d,h=TRUE,md=c(""," ","NA"),
   dadosTemp<-NULL
   dadosTemp<-sapply(dados, paste0, collapse = " ")
   stopifnot(all(grepl("^[ -~]+$", dadosTemp)))
+
+  #Detectando informações perdidas
+    if(any(sapply(dados[i],is.na))){
+      stop("All data shoud be present. No missing values allowed")
+    }
 
   name<-basename(local)
   length_name<-nchar(name)
