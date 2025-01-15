@@ -55,11 +55,11 @@ formatA<-function(local,s,d,h=TRUE,md=c(""," ","NA"),
     }
   }
   #Replacing NAs
-  vnas<-sapply(dados,is.na)
-  for(i in 1:ncol(vnas)){
-    if(sum(vnas[,i]!=0)){
-      for(j in 1:nrow(vnas)){
-        if(vnas[j,i]==TRUE){
+  dfnas<-is.na(dados)
+  for(i in 1:length(dados)){
+    if(sum(dfnas[,i])!=0){
+      for(j in 1:nrow(dfnas)){
+        if(dfnas[j,i]==TRUE){
           dados[j,i]<-omd
         }
       }
