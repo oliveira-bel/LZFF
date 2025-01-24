@@ -51,7 +51,7 @@ formatB<-function(local,s,d,h=TRUE,md=c(""," ","NA"),
   }
 
   #Checking if trait values are real and effects value are integer
-  if(!all(sapply(data, is.numeric))){
+  if(!all(sapply(dados, is.numeric))){
     stop("All the information must be numeric. Alphanumeric data are not allowed")
   }else{
     if(!is.null(effectsInt)){
@@ -87,14 +87,13 @@ formatB<-function(local,s,d,h=TRUE,md=c(""," ","NA"),
   #Traits columns
   d2<-rep(unlist(lapply(dados[, traits], c)), traits)
 
-  #Ordering
-  dados<-data.frame(d1,d2)
-  dados<-dados[order(dados[, 2], dados[, 1], na.last = FALSE), ]
-
   #Adding trait number column
-  d3<-rep(1:length(traits), length(d2)/length(traits))
-  dados<-data.frame(dados, d3)
+  d3<-rep(1:length(traits), each = length(d2)/length(traits))
 
+  dados<-data.frame(d3,d1,d2)
+
+  #Ordering
+  dados<-dados[order(dados[, 2], dados[, 1], na.last = FALSE), ]
 
   #Ensuring that output file's name is no longer than 30 characters
   length_of<-nchar(of)
@@ -103,7 +102,7 @@ formatB<-function(local,s,d,h=TRUE,md=c(""," ","NA"),
   }
 
   #Writing data with fixed columns format
-  write.fwf(dados, file = of, sep = " ", na = omd, colnames = FALSE,
+  gdata::write.fwf(dados, file = of, sep = " ", na = omd, colnames = FALSE,
             eol = Eol, scientific = FALSE)
 }
 
