@@ -9,15 +9,15 @@
 #' simpleRecode(y)
 
 
-rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA")){
-  #Leitura de dados
+rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA"), colsPed = NULL){
+  #Data reading
   tipo<-stringr::str_extract(local,"(\\w+)$")
-  if(stringr::str_detect(local,"https://docs.google.com/spreadsheets")){
-    tipo<-"gsheet"
-    }
   if(tipo == basename(local)){
     tipo<-"txt"
   }
+  if(stringr::str_detect(local,"https://docs.google.com/spreadsheets")){
+    tipo<-"gsheet"
+    }
   switch(tipo,
         csv = dados<-utils::read.csv(local, header = h, sep = s, dec = d,
                                      strip.white = FALSE, na.strings = md),
@@ -37,7 +37,21 @@ rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA")){
 
         print("I did not detect the type of the file.")
         )
-  #data<-unique(data)
-  #codes<-1:length(data)
-  #mapa<-data.frame("Original_Codes"=data,"Recodes"=codes)
+
+  ##########
+  #Recoding#
+  ##########
+  #checking if all values are numeric
+  isnum<-sapply(dados,is.numeric)
+  mapList<-list()
+  for(i in 1:length(isnum)){
+    if(!isnum[i] && all(i != colsPed)){
+      tempData<-unique(dados[,i])
+      codes<-1:length(tempData)
+      mapa<-data.frame("Original Codes" = tempData, "Recodes" = codes)
+      mapList<-append(mapList, list(mapa))
+      index<-match(dados[,i],mapList[[length(mapList)]]$Original_Codes)
+      dados[,i]<-mapList[[length(mapList)]]$Recodes[index]
+    }
+  }
 }
