@@ -13,47 +13,8 @@
 #' @export
 #'
 
-formatA<-function(local,s,d,h=TRUE,md=c(""," ","NA"),
-                    of="formatA_data",omd=0,EoL="\n"){
-  if(stringr::str_detect(of,"#")){
-    stop("File name cannot contain a #. Choose a name without a #")
-  }
-  tipo<-stringr::str_extract(local,"(\\w+)$")
-  if(tipo=="csv"){
-    dados<-utils::read.csv(local,header=h,sep=s,dec=d,strip.white=FALSE,
-                           na.strings = md)
-  } else{
-    if(tipo=="xls" || tipo=="xlsx"){
-      dados<-as.data.frame(readxl::read_excel(local,na = md),col_names=h)
-    } else{
-      if(tipo=="ods"){
-        dados<-as.data.frame(readODS::read_ods(local,na = md), col_names = h)
-      }else{
-        if(tipo=="gsheet"|stringr::str_detect(local,
-                                              "https://docs.google.com/spreadsheets")){
-          googlesheets4::gs4_auth()
-          dados<-as.data.frame(googlesheets4::read_sheet(local,na=md),col_names=h)
-        } else{
-          if(tipo=="txt"|tipo==basename(local)){
-            dados<-utils::read.table(local,header=h,sep=s,dec=d,
-                                     strip.white=FALSE,na.strings = md)
-          } else{
-            stop("I did not detect the type of the file.")
-          }
-        }
-      }
-    }
-  }
-  #checking if all values are numeric
-  isnum<-sapply(dados,is.numeric)
-  mapList<-list()
-  for(i in 1:length(isnum)){
-    if(!isnum[i]){
-      mapList<-append(mapList,list(simpleRecode(dados[,i])))
-      mapa<-match(dados[,i],mapList[[length(mapList)]]$Original_Codes)
-      dados[,i]<-mapList[[length(mapList)]]$Recodes[mapa]
-    }
-  }
+formatA<-function(dados,omd=0){
+
   #Replacing NAs
   dfnas<-is.na(dados)
   for(i in 1:length(dados)){
