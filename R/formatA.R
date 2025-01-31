@@ -1,32 +1,23 @@
-#' Function for phenotypic data file formatting to BLUPF90 software
+#' Data Formatting
 #'
-#' @param local path of the data file
-#' @param h logical value indicating the presence of header
-#' @param s field separator used in data file
-#' @param d character used as decimal separator
-#' @param md value used to indicate missing values in data file
-#' @param of name of the output file
-#' @param omd missing data value to be written in the output file
-#' @param eol end of line marker
+#' @description
+#' Function for formatting phenotypic data following the rules of the BLUPF90 software.
 #'
-#' @return a data file in the appropriate format to run the software
+#' @param udata data frame received from rrcData function with unformatted data.
+#' @param omd missing data value to be written in the output file.
+#' @param of output file name.
+#' @param EoL end of line indicator. Unix and Linux uses "\\n", while Windows uses "\\r\\n".
+#'
+#' @return a formatted file.
+#'
 #' @export
 #'
 
-formatA<-function(dados,omd=0){
-
-  #Replacing NAs
-  dfnas<-is.na(dados)
-  for(i in 1:length(dados)){
-    if(sum(dfnas[,i])!=0){
-      for(j in 1:nrow(dfnas)){
-        if(dfnas[j,i]==TRUE){
-          dados[j,i]<-omd
-        }
-      }
-    }
+formatA<-function(udata, omd = 0, of = "formatted_file", EoL = "\n"){
+  if(stringr::str_detect(of,"#")){
+    stop("File name cannot contain a #. Choose a name without a #")
   }
-  # Writing the formated data file
-  utils::write.table(dados,of,quote=FALSE,sep=" ",row.names=FALSE,
-                     col.names=FALSE,eol=EoL)
+
+  utils::write.table(udata, file = of, quote = FALSE, sep = " ",
+                     row.names = FALSE, col.names = FALSE, eol = EoL, na = omd)
 }
