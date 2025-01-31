@@ -55,7 +55,7 @@ rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA"), colsPed = NULL, co
   isnum<-sapply(dados,is.numeric)
   mapList<-list()
   for(i in 1:length(isnum)){
-    if(any(dados[i] < 0)){
+    if(any(dados[,i] < 0)){
       stop("All values should be positive.")
     }
     if(!isnum[i] && all(i != colsPed)){
