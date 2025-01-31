@@ -1,78 +1,20 @@
-formatB<-function(local,s,d,h=TRUE,md=c(""," ","NA"),
-                  of="formatA_data",omd = -99999,
-                  effectsInt = NULL, traits = NULL, EoL="\n"){
-
+#' Formatting Data
+#'
+#' @param udata data frame received from rrcData function with unformatted data.
+#' @param of output file name.
+#' @param omd missing data value to be written in the output file.
+#' @param traits vector indicating traits columns.
+#' @param EoL end of line indicator. Unix and Linux uses "\\n", while Windows uses "\\r\\n".
+#' @param width vector specifying the width of columns in the formatted file.
+#'
+#' @returns a formatted file.
+#' @export
+#'
+#' @examples
+formatB<-function(udata, of = "formatA_data", omd = -99999, traits = NULL,
+                  width = NULL, EoL = "\n"){
   if(stringr::str_detect(of,"#")){
     stop("File name cannot contain a #. Choose a name without a #")
-  }
-
-  tipo<-stringr::str_extract(local,"(\\w+)$")
-  if(tipo=="csv"){
-    dados<-utils::read.csv(local,header=h,sep=s,dec=d,strip.white=FALSE,
-                           na.strings = md)
-  } else{
-    if(tipo=="xls" || tipo=="xlsx"){
-      dados<-as.data.frame(readxl::read_excel(local,na = md),col_names=h)
-    } else{
-      if(tipo=="ods"){
-        dados<-as.data.frame(readODS::read_ods(local,na = md), col_names = h)
-      }else{
-        if(tipo=="gsheet"|stringr::str_detect(local,
-                                              "https://docs.google.com/spreadsheets")){
-          googlesheets4::gs4_auth()
-          dados<-as.data.frame(googlesheets4::read_sheet(local,na=md),col_names=h)
-        } else{
-          if(tipo=="txt"|tipo==basename(local)){
-            dados<-utils::read.table(local,header=h,sep=s,dec=d,
-                                     strip.white=FALSE,na.strings = md)
-          } else{
-            stop("I did not detect the type of the file.")
-          }
-        }
-      }
-    }
-  }
-
-  #Checking if the file is ASCII
-  dadosTemp<-NULL
-  dadosTemp<-sapply(dados, paste0, collapse = " ")
-  stopifnot(all(grepl("^[ -~]+$", dadosTemp)))
-
-  #Replacing NAs
-  dfnas<-is.na(dados)
-  for(i in 1:length(dados)){
-    if(sum(dfnas[,i])!=0){
-      for(j in 1:nrow(dfnas)){
-        if(dfnas[j,i]==TRUE){
-          dados[j,i]<-omd
-        }
-      }
-    }
-  }
-
-  #Checking if trait values are real and effects value are integer
-  if(!all(sapply(dados, is.numeric))){
-    stop("All the information must be numeric. Alphanumeric data are not allowed")
-  }else{
-    if(!is.null(effectsInt)){
-      if(dados[, effectsInt] %% 1 != 0 && dados[, effectsInt] < 0){
-        stop("All data must be a positive integer for the effects.")
-      }
-      dados[, effectInt]<-sapply(dados[, effectInt],as.integer)
-    }
-  }
-
-  #Checking if the integers are within limits
-  if(dados[, effectsInt] > 2147483647){
-    stop("Effects values are too big.")
-  }
-  #Checking if variances of trais are within a reasonable interval
-  if(!is.null((traits))){
-    varTemp<-lapply(dados[, traits], var)
-    if(varTemp < 1e-5 || varTemp > 1e5){
-      stop("Variances of the traits are too small ou too big. You should scale the data.")
-
-    }
   }
 
   #Formatting columns of data
@@ -102,8 +44,8 @@ formatB<-function(local,s,d,h=TRUE,md=c(""," ","NA"),
   }
 
   #Writing data with fixed columns format
-  gdata::write.fwf(dados, file = of, sep = " ", na = omd, colnames = FALSE,
-            eol = Eol, scientific = FALSE)
+  gdata::write.fwf(dados, file = of, sep = " ", na = omd, rownames = FALSE,
+                   colnames = FALSE, eol = Eol, scientific = FALSE, width)
 }
 
 
