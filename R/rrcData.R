@@ -6,15 +6,15 @@
 #' @param h logical value indicating presence of header in data file
 #' @param md missing data indicator
 #' @param colsPed identification of columns related to pedigree data
+#' @param colsTraits identification of columns related to traits
 #'
 #' @description
 #' Simple function for read, recode and perform some checks in a data file.
 #'
 #' @return a data frame with data file columns read and recoded as needed. Pedigree data are not recoded by this function
-#'
-#'
+#' @export
 
-rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA"), colsPed = NULL){
+rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA"), colsPed = NULL, colsTraits = NULL){
   #Data reading
   tipo<-stringr::str_extract(local,"(\\w+)$")
   if(tipo == basename(local)){
@@ -55,7 +55,7 @@ rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA"), colsPed = NULL){
   isnum<-sapply(dados,is.numeric)
   mapList<-list()
   for(i in 1:length(isnum)){
-    if(dados[i] < 0){
+    if(any(dados[i] < 0)){
       stop("All values should be positive.")
     }
     if(!isnum[i] && all(i != colsPed)){
@@ -69,14 +69,14 @@ rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA"), colsPed = NULL){
   }
 
   #Checking if the integers are within limits
-  if(dados[, effectsInt] > 2147483647){
+  if(any(dados[, -c(colsPed, colsTraits)] > 2147483647)){
     stop("Effects values are too big.")
   }
 
   #Checking if variances of trais are within a reasonable interval
-  if(!is.null((traits))){
-    varTemp<-lapply(dados[, traits], var)
-    if(varTemp < 1e-5 || varTemp > 1e5){
+  if(!is.null((colsTraits))){
+    varTemp<-lapply(dados[, colsTraits], var)
+    if(any(varTemp < 1e-5 || varTemp > 1e5)){
       stop("Variances of the traits are too small ou too big. You should scale the data.")
     }
   }

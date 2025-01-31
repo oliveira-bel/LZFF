@@ -7,16 +7,16 @@
 formatA(udata, omd = 0, of = "formatted_file", EoL = "\\n")
 }
 \arguments{
-\item{udata}{data frame received from rrcData function with unformatted data}
+\item{udata}{data frame received from rrcData function with unformatted data.}
 
 \item{omd}{missing data value to be written in the output file.}
 
-\item{of}{output file name}
+\item{of}{output file name.}
 
 \item{EoL}{end of line indicator. Unix and Linux uses "\\n", while Windows uses "\\r\\n".}
 }
 \value{
-a data frame in the appropriate format to be converted in a file to run the software
+a formatted file.
 }
 \description{
 Function for formatting phenotypic data following the rules of the BLUPF90 software.

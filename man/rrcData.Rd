@@ -2,20 +2,36 @@
 % Please edit documentation in R/rrcData.R
 \name{rrcData}
 \alias{rrcData}
-\title{Simple function to recode alphanumeric data}
+\title{Read, recode and check}
 \usage{
-rrcData(local, s, d, h = TRUE, md = c("", " ", "NA"), colsPed = NULL)
+rrcData(
+  local,
+  s,
+  d,
+  h = TRUE,
+  md = c("", " ", "NA"),
+  colsPed = NULL,
+  colsTraits = NULL
+)
 }
 \arguments{
-\item{data}{a vector of data to be recoded}
+\item{local}{data file path}
+
+\item{s}{field/column separator}
+
+\item{d}{decimal point used in data file}
+
+\item{h}{logical value indicating presence of header in data file}
+
+\item{md}{missing data indicator}
+
+\item{colsPed}{identification of columns related to pedigree data}
+
+\item{colsTraits}{identification of columns related to traits}
 }
 \value{
-a data frame with the original codes as the first column and the recodes as a second column
+a data frame with data file columns read and recoded as needed. Pedigree data are not recoded by this function
 }
 \description{
-Simple function to recode alphanumeric data
-}
-\examples{
-y<-c("2","4","a7","b854fg","34")
-simpleRecode(y)
+Simple function for read, recode and perform some checks in a data file.
 }

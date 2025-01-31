@@ -10,7 +10,6 @@
 #' @returns a formatted file.
 #' @export
 #'
-#' @examples
 formatB<-function(udata, of = "formatA_data", omd = -99999, traits = NULL,
                   width = NULL, EoL = "\n"){
   if(stringr::str_detect(of,"#")){
