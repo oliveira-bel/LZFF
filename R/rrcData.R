@@ -1,13 +1,18 @@
-#' Simple function to recode alphanumeric data
+#' Read, recode and check
 #'
-#' @param data a vector of data to be recoded
+#' @param local data file path
+#' @param s field/column separator
+#' @param d decimal point used in data file
+#' @param h logical value indicating presence of header in data file
+#' @param md missing data indicator
+#' @param colsPed identification of columns related to pedigree data
 #'
-#' @return a data frame with the original codes as the first column and the recodes as a second column
+#' @description
+#' Simple function for read, recode and perform some checks in a data file.
 #'
-#' @examples
-#' y<-c("2","4","a7","b854fg","34")
-#' simpleRecode(y)
-
+#' @return a data frame with data file columns read and recoded as needed. Pedigree data are not recoded by this function
+#'
+#'
 
 rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA"), colsPed = NULL){
   #Data reading
@@ -38,6 +43,11 @@ rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA"), colsPed = NULL){
         print("I did not detect the type of the file.")
         )
 
+  #Checking if the file is ASCII
+  dadosTemp<-NULL
+  dadosTemp<-sapply(dados, paste0, collapse = " ")
+  stopifnot(all(grepl("^[ -~]+$", dadosTemp)))
+
   ##########
   #Recoding#
   ##########
@@ -45,6 +55,9 @@ rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA"), colsPed = NULL){
   isnum<-sapply(dados,is.numeric)
   mapList<-list()
   for(i in 1:length(isnum)){
+    if(dados[i] < 0){
+      stop("All values should be positive.")
+    }
     if(!isnum[i] && all(i != colsPed)){
       tempData<-unique(dados[,i])
       codes<-1:length(tempData)
@@ -52,6 +65,19 @@ rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA"), colsPed = NULL){
       mapList<-append(mapList, list(mapa))
       index<-match(dados[,i],mapList[[length(mapList)]]$Original_Codes)
       dados[,i]<-mapList[[length(mapList)]]$Recodes[index]
+    }
+  }
+
+  #Checking if the integers are within limits
+  if(dados[, effectsInt] > 2147483647){
+    stop("Effects values are too big.")
+  }
+
+  #Checking if variances of trais are within a reasonable interval
+  if(!is.null((traits))){
+    varTemp<-lapply(dados[, traits], var)
+    if(varTemp < 1e-5 || varTemp > 1e5){
+      stop("Variances of the traits are too small ou too big. You should scale the data.")
     }
   }
 }
