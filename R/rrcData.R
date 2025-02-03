@@ -80,4 +80,5 @@ rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA"), colsPed = NULL, co
       warning("Variances of the traits are too small ou too big. You should scale the data.")
     }
   }
+  dados
 }
