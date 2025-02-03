@@ -19,15 +19,13 @@ formatB<-function(udata, of = "formatA_data", omd = -99999, traits = NULL,
   #Formatting columns of data
   #Effects columns
   d1<-udata[, -traits]
-  i<-1
+  i<-2
   while(i <= length(traits)){
     d1<-rbind(d1,udata[, -traits])
     i <- i + 1
   }
-
   #Traits columns
-  d2<-rep(unlist(lapply(udata[, traits], c)), traits)
-
+  d2<-unlist(lapply(udata[, traits], c))
   #Adding trait number column
   d3<-rep(1:length(traits), each = length(d2)/length(traits))
 

@@ -27,11 +27,11 @@ rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA"), colsPed = NULL, co
         csv = dados<-utils::read.csv(local, header = h, sep = s, dec = d,
                                      strip.white = FALSE, na.strings = md),
 
-        xls = dados<-as.data.frame(readxl::read_excel(local,na = md), col_names = h),
+        xls = dados<-as.data.frame(readxl::read_excel(local, na = md, col_names = h)),
 
-        xlsx = dados<-as.data.frame(readxl::read_excel(local,na = md), col_names = h),
+        xlsx = dados<-as.data.frame(readxl::read_excel(local, na = md, col_names = h)),
 
-        ods = dados<-as.data.frame(readODS::read_ods(local,na = md), col_names = h),
+        ods = dados<-as.data.frame(readODS::read_ods(local, na = md, col_names = h)),
 
         gsheet = {googlesheets4::gs4_auth()
                   dados<-as.data.frame(googlesheets4::read_sheet(local, na = md),
