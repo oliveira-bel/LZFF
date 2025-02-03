@@ -18,23 +18,23 @@ formatB<-function(udata, of = "formatA_data", omd = -99999, traits = NULL,
 
   #Formatting columns of data
   #Effects columns
-  d1<-dados[, -traits]
+  d1<-udata[, -traits]
   i<-1
   while(i <= length(traits)){
-    d1<-rbind(d1,dados[, -traits])
+    d1<-rbind(d1,udata[, -traits])
     i <- i + 1
   }
 
   #Traits columns
-  d2<-rep(unlist(lapply(dados[, traits], c)), traits)
+  d2<-rep(unlist(lapply(udata[, traits], c)), traits)
 
   #Adding trait number column
   d3<-rep(1:length(traits), each = length(d2)/length(traits))
 
-  dados<-data.frame(d3,d1,d2)
+  udata<-data.frame(d3,d1,d2)
 
   #Ordering
-  dados<-dados[order(dados[, 2], dados[, 1], na.last = FALSE), ]
+  fdata<-udata[order(udata[, 2], udata[, 1], na.last = FALSE), ]
 
   #Ensuring that output file's name is no longer than 30 characters
   length_of<-nchar(of)
@@ -43,7 +43,7 @@ formatB<-function(udata, of = "formatA_data", omd = -99999, traits = NULL,
   }
 
   #Writing data with fixed columns format
-  gdata::write.fwf(dados, file = of, sep = " ", na = omd, rownames = FALSE,
+  gdata::write.fwf(fdata, file = of, sep = " ", na = omd, rownames = FALSE,
                    colnames = FALSE, eol = Eol, scientific = FALSE, width)
 }
 
