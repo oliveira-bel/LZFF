@@ -10,8 +10,8 @@
 #' @returns a formatted file.
 #' @export
 #'
-formatB<-function(udata, of = "formatA_data", omd = -99999, traits = NULL,
-                  width = NULL, EoL = "\n"){
+formatB<-function(udata, of = "formatA_data", omd = "-99999", traits = NULL,
+                  widths = NULL, EoL = "\n"){
   if(stringr::str_detect(of,"#")){
     stop("File name cannot contain a #. Choose a name without a #")
   }
@@ -40,9 +40,12 @@ formatB<-function(udata, of = "formatA_data", omd = -99999, traits = NULL,
     of<-stringr::str_sub(of,-30)
   }
 
+  fnames<-paste0("x",1:length(fdata))
+  colnames(fdata)<-fnames
+  rownames(fdata)<-NULL
+  print(fdata)
+
   #Writing data with fixed columns format
-  gdata::write.fwf(fdata, file = of, sep = " ", na = omd, rownames = FALSE,
-                   colnames = FALSE, eol = Eol, scientific = FALSE, width)
+  gdata::write.fwf(fdata, file = of, width = widths, sep = " ", na = omd,
+                   rownames = FALSE, colnames = FALSE, eol = EoL, scientific = FALSE)
 }
-
-
