@@ -43,7 +43,6 @@ formatB<-function(udata, of = "formatA_data", omd = "-99999", traits = NULL,
   fnames<-paste0("x",1:length(fdata))
   colnames(fdata)<-fnames
   rownames(fdata)<-NULL
-  print(fdata)
 
   #Writing data with fixed columns format
   gdata::write.fwf(fdata, file = of, width = widths, sep = " ", na = omd,
