@@ -13,7 +13,7 @@
 #' @export
 #'
 
-formatA<-function(udata, omd = 0, of = "formatted_file", EoL = "\n"){
+formatA<-function(udata, omd = "0", of = "formatted_file", EoL = "\n"){
   if(stringr::str_detect(of,"#")){
     stop("File name cannot contain a #. Choose a name without a #")
   }
