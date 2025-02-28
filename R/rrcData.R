@@ -54,16 +54,19 @@ rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA"), colsPed = NULL, co
   #checking if all values are numeric
   isnum<-sapply(dados,is.numeric)
   mapList<-list()
-  for(i in 1:length(isnum)){
+  for(i in 1:length(isnum[-colsTraits])){
     if(any(dados[,i] < 0)){
       stop("All values should be positive.")
     }
+  }
+
+  for(i in 1:length(isnum)){
     if(!isnum[i] && all(i != colsPed)){
       tempData<-unique(dados[,i])
       codes<-1:length(tempData)
-      mapa<-data.frame("Original Codes" = tempData, "Recodes" = codes)
+      mapa<-data.frame("Original.Codes" = tempData, "Recodes" = codes)
       mapList<-append(mapList, list(mapa))
-      index<-match(dados[,i],mapList[[length(mapList)]]$Original_Codes)
+      index<-match(dados[,i],mapList[[length(mapList)]]$Original.Codes)
       dados[,i]<-mapList[[length(mapList)]]$Recodes[index]
     }
   }
