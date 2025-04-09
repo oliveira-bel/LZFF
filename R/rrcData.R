@@ -78,7 +78,7 @@ rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA"), colsPed = NULL, co
 
   #Checking if variances of trais are within a reasonable interval
   if(!is.null((colsTraits))){
-    varTemp<-sapply(dados[, colsTraits], stats::var)
+    varTemp<-sapply(dados[, colsTraits], stats::var, na.rm = TRUE)
     if(any(varTemp < 1e-5 | varTemp > 1e5)){
       warning("Variances of the traits are too small ou too big. You should scale the data.")
     }
