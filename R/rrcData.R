@@ -14,7 +14,7 @@
 #' @return a data frame with data file columns read and recoded as needed. Pedigree data are not recoded by this function
 #' @export
 
-rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA"), colsPed = NULL, colsTraits = NULL){
+rrcData<-function(local, s, d, h = FALSE, md = c(""," ","NA"), colsPed = NULL, colsTraits = NULL){
   #Data reading
   tipo<-stringr::str_extract(local,"(\\w+)$")
   if(tipo == basename(local)){
@@ -25,7 +25,7 @@ rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA"), colsPed = NULL, co
     }
   switch(tipo,
         csv = dados<-utils::read.csv(local, header = h, sep = s, dec = d,
-                                     strip.white = FALSE, na.strings = md),
+                                     strip.white = FALSE, na.strings = md, fill = TRUE),
 
         xls = dados<-as.data.frame(readxl::read_excel(local, na = md, col_names = h)),
 
@@ -38,7 +38,7 @@ rrcData<-function(local, s, d, h = TRUE, md = c(""," ","NA"), colsPed = NULL, co
                                        col_names = h)},
 
         txt = dados<-utils::read.table(local, header = h, sep = s, dec = d,
-                                       strip.white = FALSE, na.strings = md),
+                                       strip.white = FALSE, na.strings = md, fill = TRUE),
 
         print("I did not detect the type of the file.")
         )
