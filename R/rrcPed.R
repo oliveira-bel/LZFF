@@ -9,8 +9,8 @@ rrcPed<-function(local, s, h = FALSE, isdd = c(1, 2, 3, 4), md = c(""," ","NA"),
   }
   switch(tipo,
          csv = dadosPed<-utils::read.csv(local, header = h, sep = s,
-                                      strip.white = FALSE, na.strings = md,
-                                      fill = TRUE),
+                                      strip.white = FALSE, fill = TRUE,
+                                      na.strings = md),
 
          xls = dadosPed<-as.data.frame(readxl::read_excel(local, na = md, col_names = h)),
 
@@ -23,8 +23,8 @@ rrcPed<-function(local, s, h = FALSE, isdd = c(1, 2, 3, 4), md = c(""," ","NA"),
                                 col_names = h)},
 
          txt = dadosPed<-utils::read.table(local, header = h, sep = s,
-                                        strip.white = FALSE, na.strings = md,
-                                        fill = TRUE),
+                                        strip.white = FALSE, fill = TRUE,
+                                        na.strings = md),
 
          print("I did not detect the type of the file.")
   )
@@ -37,7 +37,18 @@ rrcPed<-function(local, s, h = FALSE, isdd = c(1, 2, 3, 4), md = c(""," ","NA"),
   #reorganizing columns
   dadosPed<-data.frame(dadosPed[,isdd])
 
+  #Checking if date of birth column is character
+  if(class(dadosPed[,4]) == "character"){
+    dadosPed[,4]<-as.Date(dadosPed[,4], tryFormats = c("%d/%m/%Y", "%d/%m/%y",
+                                                       "%d/%B/%Y", "%d/%B/%y",
+                                                       "%d/%b/%Y", "%d/%b/%y",
+                                                       "%m/%d/%Y", "%m/%d/%y",
+                                                       "%B/%d/%Y", "%B/%d/%y",
+                                                       "%Y-%m-%d", "%y-%m-%d"))
+  }
+
   #checking if there are duplicate data
   dadosPed<-unique(dadosPed)
+
 
 }
