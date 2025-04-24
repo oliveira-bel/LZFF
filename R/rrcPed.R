@@ -50,5 +50,13 @@ rrcPed<-function(local, s, h = FALSE, isdd = c(1, 2, 3, 4), md = c(""," ","NA"),
   #checking if there are duplicate data
   dadosPed<-unique(dadosPed)
 
+  #Checking if there are animal who appear in both columns: sire and dam
+  bad<-match(dadosPed[,2], dadosPed[,3], incomparables = NA)
+  if (!all(is.na(bad))){
+    stop("Error: An animal appears in both columns: sire and dam. Please, check your pedigree.
+         Function aborted!")
+  }
 
+  #Replacing absent parents
+  dadosPed<-replace(dadosPed, list = is.na(dadosPed), values = 0)
 }
