@@ -1,52 +1,16 @@
-test_that("reading files working csv", {
-  readFile<-rrcPed(testthat::test_path("dataForTests", "DP-CA.csv"),
-                    s = ",", d = ".", colsPed = 1, colsTraits = 4:8)
-  expect_equal(ncol(readFile), 8)
-  expect_equal(nrow(readFile), 29)
-})
+rawPedigree<-read.table(testthat::test_path("dataForTests", "ped.txt"),
+                        sep = " ", header = TRUE, strip.white = FALSE,
+                        na.strings = c("", " ", "NA"), fill = TRUE)
 
-test_that("reading files working txt", {
-  readFile<-rrcPed(testthat::test_path("dataForTests", "DP.CA2.txt"),
-                    s = ",", d = ".", colsPed = 1, colsTraits = 4:8)
-  expect_equal(ncol(readFile), 8)
-  expect_equal(nrow(readFile), 29)
-})
+test_that("Date conversion is working for text files", {
+  rawPedigree<-data.frame(rawPedigree[,c(2, 4, 3, 1)])
+  expect_equal(class(rawPedigree[,4]), "character")
+  rawPedigree[,4]<-as.Date(rawPedigree[,4])
+  expect_equal(class(rawPedigree[,4]), "Date")
+  })
 
-test_that("reading files working xls", {
-  readFile<-rrcPed(testthat::test_path("dataForTests", "SDP.SCA2.xls"),
-                    s = ",", d = ".", colsPed = 1, colsTraits = 4:8)
-  expect_equal(ncol(readFile), 8)
-  expect_equal(nrow(readFile), 39)
-})
-
-test_that("reading files working xlsx", {
-  readFile<-rrcPed(testthat::test_path("dataForTests", "DP.SCA2.xlsx"),
-                    s = ",", d = ".", colsPed = 1, colsTraits = 4:8)
-  expect_equal(ncol(readFile), 8)
-  expect_equal(nrow(readFile), 29)
-})
-
-test_that("reading files working Sem extensão", {
-  readFile<-rrcPed(testthat::test_path("dataForTests", "SDPCA2"),
-                    s = ",", d = ".", colsPed = 1, colsTraits = 4:8)
-  expect_equal(ncol(readFile), 8)
-  expect_equal(nrow(readFile), 39)
-})
-
-test_that("reading files working ODS", {
-  readFile<-rrcPed(testthat::test_path("dataForTests", "TesteODS.ods"),
-                    s = ",", d = ".", colsPed = 1, colsTraits = 4:8)
-  expect_equal(ncol(readFile), 8)
-  expect_equal(nrow(readFile), 29)
-})
-
-test_that("recoding is working", {
-  unrecodedData<-read.csv(testthat::test_path("dataForTests", "DP-CA.csv"),
-                          s = ",", d = ".")
-  recodedData<-rrcPed(testthat::test_path("dataForTests", "DP-CA.csv"),
-                       s = ",", d = ".", colsPed = 1, colsTraits = 4:8)
-
-  expect_equal(length(unrecodedData), length(recodedData))
-  expect_equal(recodedData[,2], unrecodedData[,2])
-  expect_equal(nlevels(as.factor(recodedData[,3])), nlevels(as.factor(unrecodedData[,3])))
+test_that("Removal of duplicated registers is working", {
+  expect_equal(nrow(rawPedigree), 6)
+  betterPedigree<-unique(rawPedigree)
+  expect_equal(nrow(betterPedigree), 5)
 })
