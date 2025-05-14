@@ -14,7 +14,8 @@
 #' @return a data frame with data file columns read and recoded as needed. Pedigree data are not recoded by this function
 #' @export
 
-rrcData<-function(local, s, d, h = FALSE, md = c(""," ","NA"), colsPed = NULL, colsTraits = NULL){
+rrcData<-function(local, s, d, h = FALSE, md = c(""," ","NA"), colsPed,
+                  colsTraits, colsDate){
   #Data reading
   tipo<-stringr::str_extract(local,"(\\w+)$")
   if(tipo == basename(local)){
@@ -43,40 +44,38 @@ rrcData<-function(local, s, d, h = FALSE, md = c(""," ","NA"), colsPed = NULL, c
         print("I did not detect the type of the file.")
         )
 
+  ##########
+  #Recoding#
+  ##########
+  for(i in 1:length(dados)){
+    if(all(i != c(colsPed, colsTraits, colsDate))){
+      tempData<-unique(dados[,i])
+      codes<-1:length(tempData)
+      mapa<-data.frame("Original.Codes" = tempData, "Recodes" = codes)
+      index<-match(dados[,i],mapa$Original.Codes)
+      dados[,i]<-mapa$Recodes[index]
+    }
+  }
+
   #Checking if the file is ASCII
   dadosTemp<-NULL
   dadosTemp<-sapply(dados, paste0, collapse = " ")
   stopifnot(all(grepl("^[ -~]+$", dadosTemp)))
 
-  ##########
-  #Recoding#
-  ##########
   #checking if all values are numeric
-  isnum<-sapply(dados,is.numeric)
-  mapList<-list()
-  for(i in 1:length(isnum[-colsTraits])){
-    if(any(dados[,i] < 0)){
+  effects<-dados[,-c(colsTraits, colsPed, colsDate)]
+  for(i in 1:length(effects)){
+    if(any(effects[,i] < 0)){
       stop("All values should be positive.")
     }
   }
 
-  for(i in 1:length(isnum)){
-    if(!isnum[i] && all(i != colsPed)){
-      tempData<-unique(dados[,i])
-      codes<-1:length(tempData)
-      mapa<-data.frame("Original.Codes" = tempData, "Recodes" = codes)
-      mapList<-append(mapList, list(mapa))
-      index<-match(dados[,i],mapList[[length(mapList)]]$Original.Codes)
-      dados[,i]<-mapList[[length(mapList)]]$Recodes[index]
-    }
-  }
-
   #Checking if the integers are within limits
-  if(any(dados[, -c(colsPed, colsTraits)] > 2147483647)){
+  if(any(effects > 2147483647)){
     stop("Effects values are too big.")
   }
 
-  #Checking if variances of trais are within a reasonable interval
+  #Checking if variances of traits are within a reasonable interval
   if(!is.null((colsTraits))){
     varTemp<-sapply(dados[, colsTraits], stats::var, na.rm = TRUE)
     if(any(varTemp < 1e-5 | varTemp > 1e5)){
