@@ -1,4 +1,5 @@
-rrcPed<-function(local, s, h = FALSE, isdd = c(1, 2, 3, 4), md = c(""," ","NA"), udata){
+rrcPed<-function(local, s, h = FALSE, isdd = c(1, 2, 3, 4), md = c(""," ","NA"),
+                 colsPedData = c(1, 2, 3), udata){
   #Data reading
   tipo<-stringr::str_extract(local,"(\\w+)$")
   if(tipo == basename(local)){
@@ -29,11 +30,6 @@ rrcPed<-function(local, s, h = FALSE, isdd = c(1, 2, 3, 4), md = c(""," ","NA"),
          print("I did not detect the type of the file.")
   )
 
-  #Checking if the file is ASCII
-  dadosPedTemp<-NULL
-  dadosPedTemp<-sapply(dadosPed, paste0, collapse = " ")
-  stopifnot(all(grepl("^[ -~]+$", dadosPedTemp)))
-
   #reorganizing columns
   dadosPed<-data.frame(dadosPed[,isdd])
 
@@ -57,6 +53,49 @@ rrcPed<-function(local, s, h = FALSE, isdd = c(1, 2, 3, 4), md = c(""," ","NA"),
          Function aborted!")
   }
 
-  #Replacing absent parents
+  #Recoding the Pedigree
+  dfPai<-data.frame(id = dadosPed[,2], datanas = as.Date(NA))
+  dfMae<-data.frame(id = dadosPed[,3], datanas = as.Date(NA))
+  dfId<-data.frame(id = dadosPed[,1], datanas = dadosPed[,4])
+
+  #Ordering individuals with date of birth
+  dfId<-dfId[order(dfId$datanas, na.last = FALSE), ]
+
+  mapaCod<-rbind(dfPai, dfMae, dfId) #order of the argument is important
+
+  #Removing duplications
+  mapaCod<-mapaCod[!duplicated(mapaCod[,1], fromLast = TRUE), ]
+  mapaCod<-mapaCod[!is.na(mapaCod[,1]),]
+
+  #Finally recoding
+  mapaCod<-data.frame(cod = mapaCod$id, recod = 1: nrow(mapaCod))
+
+  #Removing date of birth column
+  dadosPed<-dadosPed[,-4]
+
+  #Replacing the original codes in the pedigree object
+  for(j in 1:3){
+    i<-match(dadosPed[,j], mapaCod[,1])
+    dadosPed[,j]<-mapaCod[,2][i]
+  }
+
+  #Replacing absent parents in the pedigree object
   dadosPed<-replace(dadosPed, list = is.na(dadosPed), values = 0)
+
+  #Checking if the file is ASCII
+  dadosPedTemp<-NULL
+  dadosPedTemp<-sapply(dadosPed, paste0, collapse = " ")
+  stopifnot(all(grepl("^[ -~]+$", dadosPedTemp)))
+
+  #Replacing the original codes in data object
+  for(j in colsPedData){
+    i<-match(udata[,j], mapaCod[,1])
+    udata[,j]<-mapaCod[,2][i]
+  }
+
+  #Replacing absent parents in the data object
+  udata[,colsPedData]<-replace(udata[,colsPedData], list = is.na(udata[,colsPedData]), values = 0)
+
+  pedDataList<-list(map = mapaCod, ped = dadosPed, data = udata)
+  pedDataList
 }
