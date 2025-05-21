@@ -8,10 +8,11 @@ rrcData(
   local,
   s,
   d,
-  h = TRUE,
+  h = FALSE,
   md = c("", " ", "NA"),
-  colsPed = NULL,
-  colsTraits = NULL
+  colsPed,
+  colsTraits,
+  colsDate
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ rrcData(
 \item{colsPed}{identification of columns related to pedigree data}
 
 \item{colsTraits}{identification of columns related to traits}
+
+\item{colsDate}{identification of columns related to Dates}
 }
 \value{
 a data frame with data file columns read and recoded as needed. Pedigree data are not recoded by this function

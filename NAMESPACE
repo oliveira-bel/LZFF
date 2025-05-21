@@ -3,3 +3,4 @@
 export(formatA)
 export(formatB)
 export(rrcData)
+export(rrcPed)

@@ -1,3 +1,21 @@
+#' Read, Recod and check Pedigree Data
+#'
+#' @param local data file path
+#' @param s field/column separator
+#' @param h logical value indicating presence of header in data file
+#' @param isdd vector of columns number for individual, sire, dam and date of birth
+#' @param md missing data indicator
+#' @param colsPedData identification of columns with pedigree information in data object
+#' @param udata unformatted data object
+#'
+#' @description
+#' Simple function for read, recode, format and perform checks in a pedigree file.
+#'
+#' @returns a list with three components: 1. a data frame with code map; 2. a data
+#' frame with the formatted pedigree data; 3. a data frame with pedigree columns
+#' in data recoded.
+#' @export
+#'
 rrcPed<-function(local, s, h = FALSE, isdd = c(1, 2, 3, 4), md = c(""," ","NA"),
                  colsPedData = c(1, 2, 3), udata){
   #Data reading

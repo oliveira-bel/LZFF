@@ -6,10 +6,10 @@
 \usage{
 formatB(
   udata,
-  of = "formatA_data",
-  omd = -99999,
+  of = "formatB_data",
+  omd = "-99999",
   traits = NULL,
-  width = NULL,
+  widths = NULL,
   EoL = "\\n"
 )
 }
@@ -22,9 +22,9 @@ formatB(
 
 \item{traits}{vector indicating traits columns.}
 
-\item{width}{vector specifying the width of columns in the formatted file.}
-
 \item{EoL}{end of line indicator. Unix and Linux uses "\\n", while Windows uses "\\r\\n".}
+
+\item{width}{vector specifying the width of columns in the formatted file.}
 }
 \value{
 a formatted file.

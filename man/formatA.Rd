@@ -4,7 +4,7 @@
 \alias{formatA}
 \title{Data Formatting}
 \usage{
-formatA(udata, omd = 0, of = "formatted_file", EoL = "\\n")
+formatA(udata, omd = "0", of = "formatted_file", EoL = "\\n")
 }
 \arguments{
 \item{udata}{data frame received from rrcData function with unformatted data.}
