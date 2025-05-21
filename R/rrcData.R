@@ -7,6 +7,7 @@
 #' @param md missing data indicator
 #' @param colsPed identification of columns related to pedigree data
 #' @param colsTraits identification of columns related to traits
+#' @param colsDate identification of columns related to Dates
 #'
 #' @description
 #' Simple function for read, recode and perform some checks in a data file.
