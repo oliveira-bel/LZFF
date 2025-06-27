@@ -52,7 +52,7 @@ rrcPed<-function(local, s, h = FALSE, isdd = c(1, 2, 3, 4), md = c(""," ","NA"),
   dadosPed<-data.frame(dadosPed[,isdd])
 
   #Checking if date of birth column is character
-  if(class(dadosPed[,4]) == "character"){
+  if(methods::is(dadosPed[,4], "character")){
     dadosPed[,4]<-as.Date(dadosPed[,4], tryFormats = c("%d/%m/%Y", "%d/%m/%y",
                                                        "%d/%B/%Y", "%d/%B/%y",
                                                        "%d/%b/%Y", "%d/%b/%y",

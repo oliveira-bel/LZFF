@@ -22,9 +22,9 @@ formatB(
 
 \item{traits}{vector indicating traits columns.}
 
-\item{EoL}{end of line indicator. Unix and Linux uses "\\n", while Windows uses "\\r\\n".}
+\item{widths}{vector specifying the widths of columns in the formatted file.}
 
-\item{width}{vector specifying the width of columns in the formatted file.}
+\item{EoL}{end of line indicator. Unix and Linux uses "\\n", while Windows uses "\\r\\n".}
 }
 \value{
 a formatted file.

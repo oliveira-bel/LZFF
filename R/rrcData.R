@@ -64,7 +64,7 @@ rrcData<-function(local, s, d, h = FALSE, md = c(""," ","NA"), colsPed,
   stopifnot(all(grepl("^[ -~]+$", dadosTemp)))
 
   #checking if all values are numeric
-  effects<-dados[,-c(colsTraits, colsPed, colsDate)]
+  effects<-as.data.frame(dados[,-c(colsTraits, colsPed, colsDate)])
   for(i in 1:length(effects)){
     if(any(effects[,i] < 0)){
       stop("All values should be positive.")

@@ -18,4 +18,5 @@ Imports:
     utils,
     gdata,
     googlesheets4,
-    readODS
+    readODS,
+    methods

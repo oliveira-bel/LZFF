@@ -4,8 +4,8 @@
 #' @param of output file name.
 #' @param omd missing data value to be written in the output file.
 #' @param traits vector indicating traits columns.
+#' @param widths vector specifying the widths of columns in the formatted file.
 #' @param EoL end of line indicator. Unix and Linux uses "\\n", while Windows uses "\\r\\n".
-#' @param width vector specifying the width of columns in the formatted file.
 #'
 #' @returns a formatted file.
 #' @export
