@@ -5,8 +5,8 @@
 #' @param h logical value indicating presence of header in data file
 #' @param isdd vector of columns number for individual, sire, dam and date of birth
 #' @param md missing data indicator
-#' @param colsPedData identification of columns with pedigree information in data object
 #' @param udata unformatted data object
+#' @param colsPedData identification of columns with pedigree information in the unformatted data object
 #'
 #' @description
 #' Simple function for read, recode, format and perform checks in a pedigree file.
@@ -17,7 +17,7 @@
 #' @export
 #'
 rrcPed<-function(local, s, h = FALSE, isdd = c(1, 2, 3, 4), md = c(""," ","NA"),
-                 colsPedData = c(1, 2, 3), udata){
+                 udata, colsPedData = c(1, 2, 3)){
   #Data reading
   tipo<-stringr::str_extract(local,"(\\w+)$")
   if(tipo == basename(local)){
@@ -50,6 +50,7 @@ rrcPed<-function(local, s, h = FALSE, isdd = c(1, 2, 3, 4), md = c(""," ","NA"),
 
   #reorganizing columns
   dadosPed<-data.frame(dadosPed[,isdd])
+  names(dadosPed)<-c("ind", "sire", "dam", "birthDate")
 
   #Checking if date of birth column is character
   if(methods::is(dadosPed[,4], "character")){
@@ -70,6 +71,16 @@ rrcPed<-function(local, s, h = FALSE, isdd = c(1, 2, 3, 4), md = c(""," ","NA"),
     stop("Error: An animal appears in both columns: sire and dam. Please, check your pedigree.
          Function aborted!")
   }
+
+
+  #Creating Founders
+  pedVec<-c(dadosPed[,2], dadosPed[,3], dadosPed[,1])
+  pedVec<-unique(pedVec, fromLast = TRUE)
+  founders<-data.frame(pedVec[1:(length(pedVec) - length(dadosPed[,1]))], NA, NA, NA)
+  name(founders)<-c("ind", "sire", "dam", "birthDate")
+
+  #Recreating the Pedigree
+  dadosPed<-rbind(founders, dadosPed, check.names = FALSE)
 
   #Recoding the Pedigree
   dfPai<-data.frame(id = dadosPed[,2], datanas = as.Date(NA))
@@ -100,7 +111,7 @@ rrcPed<-function(local, s, h = FALSE, isdd = c(1, 2, 3, 4), md = c(""," ","NA"),
   #Replacing absent parents in the pedigree object
   dadosPed<-replace(dadosPed, list = is.na(dadosPed), values = 0)
 
-  #Checking if the file is ASCII
+  #Checking if the pedigree data is ASCII
   dadosPedTemp<-NULL
   dadosPedTemp<-sapply(dadosPed, paste0, collapse = " ")
   stopifnot(all(grepl("^[ -~]+$", dadosPedTemp)))
