@@ -53,8 +53,8 @@ rrcPed<-function(local, s, h = FALSE, isdd = c(1, 2, 3, 4), md = c(""," ","NA"),
   names(dadosPed)<-c("ind", "sire", "dam", "birthDate")
 
   #Checking if date of birth column is character
-  if(methods::is(dadosPed[,4], "character")){
-    dadosPed[,4]<-as.Date(dadosPed[,4], tryFormats = c("%d/%m/%Y", "%d/%m/%y",
+  if(methods::is(dadosPed$birthDate, "character")){
+    dadosPed$birthDate<-as.Date(dadosPed$birthDate, tryFormats = c("%d/%m/%Y", "%d/%m/%y",
                                                        "%d/%B/%Y", "%d/%B/%y",
                                                        "%d/%b/%Y", "%d/%b/%y",
                                                        "%m/%d/%Y", "%m/%d/%y",
@@ -74,33 +74,25 @@ rrcPed<-function(local, s, h = FALSE, isdd = c(1, 2, 3, 4), md = c(""," ","NA"),
 
 
   #Creating Founders
-  pedVec<-c(dadosPed[,2], dadosPed[,3], dadosPed[,1])
+  pedVec<-c(dadosPed$sire, dadosPed$dam, dadosPed$ind)
   pedVec<-unique(pedVec, fromLast = TRUE)
-  founders<-data.frame(pedVec[1:(length(pedVec) - length(dadosPed[,1]))], NA, NA, NA)
-  name(founders)<-c("ind", "sire", "dam", "birthDate")
+  pedVec<-pedVec[!is.na(pedVec)]
+  founders<-data.frame(pedVec[1:(length(pedVec) - length(dadosPed$ind))], NA, NA, as.Date(NA))
+  names(founders)<-c("ind", "sire", "dam", "birthDate")
 
   #Recreating the Pedigree
-  dadosPed<-rbind(founders, dadosPed, check.names = FALSE)
+  dadosPed<-rbind(founders, dadosPed)
 
   #Recoding the Pedigree
-  dfPai<-data.frame(id = dadosPed[,2], datanas = as.Date(NA))
-  dfMae<-data.frame(id = dadosPed[,3], datanas = as.Date(NA))
-  dfId<-data.frame(id = dadosPed[,1], datanas = dadosPed[,4])
 
   #Ordering individuals with date of birth
-  dfId<-dfId[order(dfId$datanas, na.last = FALSE), ]
+  dadosPed<-dadosPed[order(dadosPed$birthDate, na.last = FALSE),]
 
-  mapaCod<-rbind(dfPai, dfMae, dfId) #order of the argument is important
-
-  #Removing duplications
-  mapaCod<-mapaCod[!duplicated(mapaCod[,1], fromLast = TRUE), ]
-  mapaCod<-mapaCod[!is.na(mapaCod[,1]),]
-
-  #Finally recoding
-  mapaCod<-data.frame(cod = mapaCod$id, recod = 1: nrow(mapaCod))
+  #Recoding
+  mapaCod<-data.frame(cod = dadosPed$ind, recod = 1: nrow(dadosPed))
 
   #Removing date of birth column
-  dadosPed<-dadosPed[,-4]
+  dadosPed$birthDate<-NULL
 
   #Replacing the original codes in the pedigree object
   for(j in 1:3){
