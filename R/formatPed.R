@@ -1,26 +1,39 @@
-
-
-formatPed<-function(ped, of = "pedigree.txt", mp = 0, s = " ", EoL = "\n",
-                    d = ".", map = FALSE, mapof = "map.txt", rm.col = 4){
+#' Format Pedigree Files
+#'
+#' @param ped object of type list with 3 elements: map, ped and data
+#' @param of output file's name for pedigree file
+#' @param mp code for missing parents
+#' @param s field/column separator
+#' @param EoL end of line symbol
+#' @param map data frame with two colums: Original codes and Recodes
+#' @param mapof map output file's name
+#' @param rm.col identification of the columns to be removed
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+formatPed<-function(pedObj, of = "pedigree.txt", mp = 0, s = " ", EoL = "\n",
+                    map = FALSE, mapof = "map.txt", rm.col = 4){
 
   #Replacing absent parents in the pedigree object
-  ped<-replace(ped, list = is.na(ped), values = mp)
+  pedObj$ped<-replace(pedObj$ped, list = is.na(pedObj$ped), values = mp)
 
   #Checking if the pedigree data is ASCII
   dadosPedTemp<-NULL
-  dadosPedTemp<-sapply(ped, paste0, collapse = " ")
+  dadosPedTemp<-sapply(pedObj$ped, paste0, collapse = " ")
   stopifnot(all(grepl("^[ -~]+$", dadosPedTemp)))
 
   #Removing columns
-  dadosPed<-dadosPed[,-rm.col]
+  pedObj$ped<-pedObj$ped[,-rm.col]
 
   if(map){
-    utils::write.table(ped[["ped"]], of, sep = s, eol = EoL, dec = d,
+    utils::write.table(pedObj$ped, of, sep = s, eol = EoL,
                        row.names = FALSE, col.names = FALSE, quote = FALSE)
-    utils::write.table(ped[["map"]], mapof, sep = s, eol =EoL, dec = d,
+    utils::write.table(pedObj$map, mapof, sep = s, eol =EoL,
                        row.names = FALSE, col.names = TRUE, quote = FALSE)
   }else{
-    utils::write.table(ped[["ped"]], of, sep = s, eol = EoL, dec = d,
+    utils::write.table(pedObj$ped, of, sep = s, eol = EoL,
                        row.names = FALSE, col.names = FALSE, quote = FALSE)
   }
 }
