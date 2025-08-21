@@ -16,7 +16,7 @@
 #' @return a data frame with data file columns read and recoded as needed. Pedigree data are not recoded by this function
 #' @export
 
-rrcData<-function(dataObj = NULL, colsPed, colsTraits, colsDate = NULL){
+rrcData<-function(dataObj = NULL, colsPed = 1:3, colsTraits, colsDate = NULL){
 
     dados<-dataObj
 
@@ -25,11 +25,12 @@ rrcData<-function(dataObj = NULL, colsPed, colsTraits, colsDate = NULL){
   ##########
   for(i in 1:length(dados)){
     if(all(i != c(colsPed, colsTraits, colsDate))){
-      tempData<-unique(dados[,i])
+      tempData<-unique(dados[[i]])
       codes<-1:length(tempData)
-      mapa<-data.frame("Original.Codes" = tempData, "Recodes" = codes)
-      index<-match(dados[,i],mapa$Original.Codes)
-      dados[,i]<-mapa$Recodes[index]
+      mapa<-data.frame(tempData, codes)
+      names(mapa)<-c("Original.Codes", "Recode")
+      index<-match(dados[[i]],mapa$Original.Codes)
+      dados[,i]<-mapa$Recode[index]
     }
   }
 
@@ -95,15 +96,16 @@ rrcDataF<-function(local = NULL, s = " ", d = ".", h = FALSE,
   ##########
   #Recoding#
   ##########
-  for(i in 1:length(dados)){
-    if(all(i != c(colsPed, colsTraits, colsDate))){
-      tempData<-unique(dados[,i])
-      codes<-1:length(tempData)
-      mapa<-data.frame("Original.Codes" = tempData, "Recodes" = codes)
-      index<-match(dados[,i],mapa$Original.Codes)
-      dados[,i]<-mapa$Recodes[index]
+    for(i in 1:length(dados)){
+      if(all(i != c(colsPed, colsTraits, colsDate))){
+        tempData<-unique(dados[[i]])
+        codes<-1:length(tempData)
+        mapa<-data.frame(tempData, codes)
+        names(mapa)<-c("Original.Codes", "Recode")
+        index<-match(dados[[i]],mapa$Original.Codes)
+        dados[,i]<-mapa$Recode[index]
+      }
     }
-  }
 
   #Checking if the file is ASCII
   dadosTemp<-NULL
