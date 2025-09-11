@@ -18,7 +18,7 @@
 
 rrcData<-function(dataObj = NULL, colsPed = 1:3, colsTraits, colsDate = NULL){
 
-    dados<-dataObj
+    dados<-as.data.frame(dataObj)
 
   ##########
   #Recoding#
@@ -54,7 +54,7 @@ rrcData<-function(dataObj = NULL, colsPed = 1:3, colsTraits, colsDate = NULL){
 
   #Checking if variances of traits are within a reasonable interval
   if(!is.null((colsTraits))){
-    varTemp<-sapply(dados[, colsTraits], stats::var, na.rm = TRUE)
+    varTemp<-sapply(as.data.frame(dados[, colsTraits]), function(x){stats::var(x, na.rm = TRUE)})
     if(any(varTemp < 1e-5 | varTemp > 1e5)){
       warning("Variances of the traits are too small ou too big. You should scale the data.")
     }

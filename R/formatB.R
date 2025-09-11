@@ -26,10 +26,12 @@ formatB<-function(udata, of = "formatB_data", omd = "-99999", traits = NULL,
   }
   #Traits columns
   d2<-unlist(lapply(udata[, traits], c))
+
   #Adding trait number column
   d3<-rep(1:length(traits), each = length(d2)/length(traits))
 
   udata<-data.frame(d3,d1,d2)
+  #udata<-udata[!is.na(udata$d2),]
 
   #Ordering
   fdata<-udata[order(udata[, 2], udata[, 1], na.last = FALSE), ]
