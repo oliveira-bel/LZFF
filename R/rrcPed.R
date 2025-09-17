@@ -55,55 +55,51 @@ rrcPed<-function(pedObj, isdd = c(1, 2, 3, 4), udata, colsPedData.isd = c(1, 2, 
          Function aborted!")
   }
 
-  #Ordering the Pedigree
-
   ###################################################################
   #Ordering the Pedigree                                            #
   ###################################################################
-  #Ordering individuals with date of birth
-  #pedData<-pedData[order(pedData$birthDate, na.last = FALSE),]
+  #Setting the founders---------------------------------------------------------
+  k<-with(pedData,
+          is.na(sire) & is.na(dam))
+  founders<-pedData[k,]
+  pedData<-pedData[!k, ]
+  rm(k)
 
-  #Ordenando sem datas de nascimento
+  #Adding parents
+  parents<-data.frame(ind = c(pedData$sire, pedData$dam), sire = NA, dam = NA)
+  parents<-rbind(founders, parents)
+  rm(founders)
+  parents<-unique(parents, fromLast = TRUE)
+  parents<-parents[!is.na(parents$ind), ]
+  #-----------------------------------------------------------------------------
+
+  #Setting the youngest individuals-------------
   i<-with(pedData,
           !(ind%in%sire | ind%in%dam))
   young<-pedData[i, ]
-
-  parents<-young[is.na(young$sire)&is.na(young$dam), ]
-  young<-young[!(is.na(young$sire)&is.na(young$dam)), ]
+  #---------------------------------------------
 
   orderped<-young
 
-  j<-with(pedData,
-          ind%in%sire | ind%in%dam)
-  elder<-pedData[j, ]
+  #Setting the older individuals-----------------------------------------------
+  j<-!i
+  older<-pedData[j, ]
 
-  fund<-data.frame(ind = c(pedData$sire, pedData$dam), sire = NA, dam = NA)
-  parents<-rbind(fund, parents)
-  rm(fund)
-  parents<-unique(parents, fromLast = TRUE)
-  parents<-parents[!is.na(parents$ind), ]
-
-  i<-match(elder$ind, parents$ind)
+  #Removing parents already in older
+  i<-match(older$ind, parents$ind)
   parents<-parents[-i, ]
-  #dup<-duplicated(elder$idf, fromLast = TRUE)
-  #elder<-elder[!dup, ]
-  #elder<-elder[!is.na(elder$idf), ]
+  #----------------------------------------------------------------------------
 
   while(TRUE){
-    i<-with(elder,
+    i<-with(older,
             !(ind%in%sire | ind%in%dam))
-    young<-elder[i, ]
+    young<-older[i, ]
 
     orderped<-rbind(young, orderped)
-    orderped<-unique(orderped, fromLast = TRUE) #Preciso desse unique?
+    j<-!i
 
-    j<-with(elder,
-            ind%in%sire | ind%in%dam)
     if(sum(j) > 0){
-      elder<-elder[j, ]
-      #if("datas presentes"){
-      # melder[order(pedigree$nascto), ]
-      #}
+      older<-older[j, ]
     }else{
       orderped<-rbind(parents, orderped)
       dup<-duplicated(orderped$ind, fromLast = TRUE)
@@ -111,11 +107,13 @@ rrcPed<-function(pedObj, isdd = c(1, 2, 3, 4), udata, colsPedData.isd = c(1, 2, 
       break
     }
   }
+  rm(older, parents, young, dup, i, j)
 
   #Recoding
   mapaCod<-data.frame(cod = orderped$ind, recod = 1: nrow(orderped))
-  ###################################################################
 
+  pedData<-orderped
+  rm(orderped)
 
   #Replacing the original codes in the pedigree object
   for(j in 1:3){
@@ -124,13 +122,16 @@ rrcPed<-function(pedObj, isdd = c(1, 2, 3, 4), udata, colsPedData.isd = c(1, 2, 
   }
 
   #Checking if the animal recode is smaller than his parents
-  #ifelse(pedData$ind <= pedData$sire | pedData$ind <= pedData$dam,{
-   #      smaller<-pedData$ind <= pedData$sire | pedData$ind <= pedData$dam
-    #     smaller<-!is.na(smaller)
-     #    print(pedData[smaller,])
-    #     stop("Animal recode is smaller than parent(s) recode. Check the pedigree file.")},
-     #    )
-
+  for(i in 1:nrow(pedData)){
+    t<-pedData$ind[i] <= pedData$sire[i] || pedData$ind[i] <= pedData$dam[i]
+    if(!is.na(t)){
+      if(t){
+        smaller<-pedData[i]
+        print("Parent have code smaller than progeny")
+        print(smaller)
+      }
+    }
+  }
 
   #Replacing the original codes in data object
   for(j in colsPedData.isd){
@@ -145,7 +146,7 @@ rrcPed<-function(pedObj, isdd = c(1, 2, 3, 4), udata, colsPedData.isd = c(1, 2, 
   pedDataList
 }
 
-#############################################################################################
+################################################################################
 
 rrcPedF<-function(local, s, h = FALSE, isdd = c(1, 2, 3, 4), md = c(""," ","NA"),
                  udata, colsPedData.isd = c(1, 2, 3)){
@@ -232,9 +233,6 @@ rrcPedF<-function(local, s, h = FALSE, isdd = c(1, 2, 3, 4), md = c(""," ","NA")
 
   i<-match(elder$ind, parents$ind)
   parents<-parents[-i, ]
-  #dup<-duplicated(elder$idf, fromLast = TRUE)
-  #elder<-elder[!dup, ]
-  #elder<-elder[!is.na(elder$idf), ]
 
   while(TRUE){
     i<-with(elder,
