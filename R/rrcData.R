@@ -16,7 +16,7 @@
 #' @return a data frame with data file columns read and recoded as needed. Pedigree data are not recoded by this function
 #' @export
 
-rrcData<-function(dataObj = NULL, colsPed = 1:3, colsTraits, colsDate = NULL){
+rrcData<-function(dataObj, colsPed = NULL, colsTraits, colsDate = NULL){
 
     dados<-as.data.frame(dataObj)
 
@@ -63,8 +63,8 @@ rrcData<-function(dataObj = NULL, colsPed = 1:3, colsTraits, colsDate = NULL){
 }
 
 
-rrcDataF<-function(local = NULL, s = " ", d = ".", h = FALSE,
-                  md = c(""," ","NA"), colsPed,colsTraits, colsDate){
+rrcDataF<-function(local, s = " ", d = ".", h = FALSE, md = c(""," ","NA"),
+                   colsPed = NULL, colsTraits, colsDate = NULL){
     #Data reading
     tipo<-stringr::str_extract(local,"(\\w+)$")
     if(tipo == basename(local)){
