@@ -4,9 +4,11 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of LZFF is to ...
+LZFF é um pacote de funções de convêniencia que tem como objetivo otimizar o tempo gasto com a preparação de dados e aumentar a reprodutibilidade dos resultados gerados pelas análises genéticas e genômicas.
 
-## Installation
+## Instalação
+
+Instruções de instalação estarão disponíveis em breve.
 
 You can install the development version of LZFF from [GitHub](https://github.com/) with:
 
@@ -15,12 +17,12 @@ You can install the development version of LZFF from [GitHub](https://github.com
 pak::pak("ricardo-da-fonseca/LZFF")
 ```
 
-## Example
+## Exemplos
 
-This is a basic example which shows you how to solve a common problem:
+Exemplos de uso estarão disponíveis em breve.
 
 ``` r
 library(LZFF)
-## basic example code
+## código do exemplo
 ```
 
