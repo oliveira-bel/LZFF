@@ -8,9 +8,7 @@ LZFF é um pacote de funções de convêniencia que tem como objetivo otimizar o
 
 ## Instalação
 
-Instruções de instalação estarão disponíveis em breve.
-
-You can install the development version of LZFF from [GitHub](https://github.com/) with:
+Você pode instalar a versão de desenvolvimento do pacote LZFF [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("pak")
