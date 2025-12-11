@@ -10,8 +10,11 @@
 #' @returns a formatted file.
 #' @export
 #'
-formatB<-function(udata, of = "formatB_data", omd = "-99999", traits = NULL,
+formatB<-function(dataPed, of = "formatB_data", omd = "-99999", traits = NULL,
                   widths = NULL, EoL = "\n"){
+
+  udata<-dataPed$data
+
   if(stringr::str_detect(of,"#")){
     stop("File name cannot contain a #. Choose a name without a #")
   }
