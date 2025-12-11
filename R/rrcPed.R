@@ -1,13 +1,13 @@
 #' Read, Recod and check Pedigree Data
 #'
-#' @pedObj object with pedigree data
+#' @param pedigreeObj object with pedigree data
 #' @param local data file path
 #' @param s field/column separator
 #' @param h logical value indicating presence of header in data file
 #' @param isd vector of columns number for individual, sire and dam
-#' @param md missing data indicator
+#' @param missData missing data indicator
 #' @param udata unformatted data object
-#' @param colsPedData.isd identification of columns with pedigree information in the unformatted data object in the order individual, sire, dam
+#' @param colsPdgDat.isd identification of columns with pedigree information in the unformatted data object in the order individual, sire, dam
 #'
 #' @description
 #' Simple function for read, recode, format and perform checks in a pedigree file.
@@ -17,20 +17,20 @@
 #' in data recoded.
 #' @export
 #'
-rrcPed<-function(pedObj = NULL, isd = c(1, 2, 3), udata, colsPedData.isd = c(1, 2, 3),
-                 local = NULL, s = " ", h = FALSE, md = c(""," ","NA")){
+rrcPed<-function(pedigreeObj = NULL, isd = c(1, 2, 3), udata, colsPdgDat.isd = c(1, 2, 3),
+                 local = NULL, s = " ", h = FALSE, missData = c(""," ","NA")){
 
   #Validation
-  argTest<-as.character(sum(!is.null(local), !is.null(pedObj)))
+  argTest<-as.character(sum(!is.null(local), !is.null(pedigreeObj)))
   switch(argTest,
          '0' = stop("You must provide EXACTLY ONE of the following arguments:\n",
                     "-'local': path to the file (character)\n",
-                    "-'pedObj': R object (data.frame)\n",
+                    "-'pedigreeObj': R object (data.frame)\n",
                     "Both cannot be NULL at the same time", call. = FALSE),
 
          '2' = stop("You must provide ONLY ONE of the following arguments:\n",
                     "-'local': path to the file (character)\n",
-                    "-'pedObj': R object (data.frame)\n",
+                    "-'pedigreeObj': R object (data.frame)\n",
                     "Both cannot be provided simultaneously", call. = FALSE))
 
   if(is.null(local) == FALSE){
@@ -45,25 +45,25 @@ rrcPed<-function(pedObj = NULL, isd = c(1, 2, 3), udata, colsPedData.isd = c(1, 
     switch(tipo,
            csv = pedData<-utils::read.csv(local, header = h, sep = s,
                                           strip.white = FALSE, fill = TRUE,
-                                          na.strings = md),
+                                          na.strings = missData),
 
-           xls = pedData<-as.data.frame(readxl::read_excel(local, na = md, col_names = h)),
+           xls = pedData<-as.data.frame(readxl::read_excel(local, na = missData, col_names = h)),
 
-           xlsx = pedData<-as.data.frame(readxl::read_excel(local, na = md, col_names = h)),
+           xlsx = pedData<-as.data.frame(readxl::read_excel(local, na = missData, col_names = h)),
 
-           ods = pedData<-as.data.frame(readODS::read_ods(local, na = md, col_names = h)),
+           ods = pedData<-as.data.frame(readODS::read_ods(local, na = missData, col_names = h)),
 
            gsheet = {googlesheets4::gs4_auth()
-             pedData<-as.data.frame(googlesheets4::read_sheet(local, na = md),
+             pedData<-as.data.frame(googlesheets4::read_sheet(local, na = missData),
                                     col_names = h)},
 
            txt = pedData<-utils::read.table(local, header = h, sep = s,
                                             strip.white = FALSE, fill = TRUE,
-                                            na.strings = md),
+                                            na.strings = missData),
 
            print("I did not detect the type of the file.")
     )}else{
-      pedData<-pedObj
+      pedData<-pedigreeObj
     }
 
   #reorganizing columns
@@ -179,13 +179,13 @@ rrcPed<-function(pedObj = NULL, isd = c(1, 2, 3), udata, colsPedData.isd = c(1, 
   }
 
   #Replacing the original codes in data object
-  for(j in colsPedData.isd){
+  for(j in colsPdgDat.isd){
     i<-match(udata[[j]], mapaCod[,1])
     udata[[j]]<-mapaCod[,2][i]
   }
 
   #Replacing absent parents in the data object
-  udata[,colsPedData.isd]<-replace(udata[,colsPedData.isd], list = is.na(udata[,colsPedData.isd]), values = 0)
+  udata[,colsPdgDat.isd]<-replace(udata[,colsPdgDat.isd], list = is.na(udata[,colsPdgDat.isd]), values = 0)
 
   pedDataList<-list(map = mapaCod, ped = pedData, data = udata)
   pedDataList

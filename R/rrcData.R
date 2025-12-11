@@ -1,13 +1,13 @@
 #' Read, recode and check
 #'
-#' @param dataObj data frame with data after a consistency analysis
+#' @param datObj data frame with data after a consistency analysis
 #' @param local data file path
 #' @param s field/column separator
 #' @param d decimal point used in data file
 #' @param h logical value indicating presence of header in data file
-#' @param md missing data indicator
-#' @param colsPed identification of columns related to pedigree data
-#' @param colsTraits identification of columns related to traits
+#' @param missData missing data indicator
+#' @param colsPdg identification of columns related to pedigree data
+#' @param colsTrts identification of columns related to traits
 #'
 #' @description
 #' Simple function for read, recode and perform some checks in a data file.
@@ -15,8 +15,8 @@
 #' @return a data frame with data file columns read and recoded as needed. Pedigree data are not recoded by this function
 #' @export
 
-rrcData<-function(dataObj = NULL, colsPed = NULL, colsTraits = NULL, local = NULL, s = " ",
-                  d = ".", h = FALSE, md = c(""," ","NA")){
+rrcData<-function(datObj = NULL, colsPdg = NULL, colsTrts = NULL, local = NULL, s = " ",
+                  d = ".", h = FALSE, missData = c(""," ","NA")){
   #Validation
   argTest<-as.character(sum(!is.null(local), !is.null(dataObj)))
   switch(argTest,
