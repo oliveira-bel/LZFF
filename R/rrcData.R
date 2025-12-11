@@ -8,7 +8,6 @@
 #' @param md missing data indicator
 #' @param colsPed identification of columns related to pedigree data
 #' @param colsTraits identification of columns related to traits
-#' @param colsDate identification of columns related to Dates
 #'
 #' @description
 #' Simple function for read, recode and perform some checks in a data file.
@@ -16,55 +15,22 @@
 #' @return a data frame with data file columns read and recoded as needed. Pedigree data are not recoded by this function
 #' @export
 
-rrcData<-function(dataObj, colsPed = NULL, colsTraits, colsDate = NULL){
+rrcData<-function(dataObj = NULL, colsPed = NULL, colsTraits = NULL, local = NULL, s = " ",
+                  d = ".", h = FALSE, md = c(""," ","NA")){
+  #Validation
+  argTest<-as.character(sum(!is.null(local), !is.null(dataObj)))
+  switch(argTest,
+         '0' = stop("You must provide EXACTLY ONE of the following arguments:\n",
+                  "-'local': path to the file (character)\n",
+                  "-'dataObj': R object (data.frame)\n",
+                  "Both cannot be NULL at the same time", call. = FALSE),
 
-    dados<-as.data.frame(dataObj)
+         '2' = stop("You must provide ONLY ONE of the following arguments:\n",
+                  "-'local': path to the file (character)\n",
+                  "-'dataObj': R object (data.frame)\n",
+                  "Both cannot be provided simultaneously", call. = FALSE))
 
-  ##########
-  #Recoding#
-  ##########
-  for(i in 1:length(dados)){
-    if(all(i != c(colsPed, colsTraits, colsDate))){
-      tempData<-unique(dados[[i]])
-      codes<-1:length(tempData)
-      mapa<-data.frame(tempData, codes)
-      names(mapa)<-c("Original.Codes", "Recode")
-      index<-match(dados[[i]],mapa$Original.Codes)
-      dados[,i]<-mapa$Recode[index]
-    }
-  }
-
-  #Checking if the characters are ASCII
-  dadosTemp<-NULL
-  dadosTemp<-sapply(dados, paste0, collapse = " ")
-  stopifnot(all(grepl("^[ -~]+$", dadosTemp)))
-
-  #checking if all values are numeric
-  effects<-as.data.frame(dados[,-c(colsTraits, colsPed, colsDate)])
-  for(i in 1:length(effects)){
-    if(any(effects[,i] < 0)){
-      stop("All values should be positive.")
-    }
-  }
-
-  #Checking if the integers are within limits
-  if(any(effects > 2147483647)){
-    stop("Effects values are too big.")
-  }
-
-  #Checking if variances of traits are within a reasonable interval
-  if(!is.null((colsTraits))){
-    varTemp<-sapply(as.data.frame(dados[, colsTraits]), function(x){stats::var(x, na.rm = TRUE)})
-    if(any(varTemp < 1e-5 | varTemp > 1e5)){
-      warning("Variances of the traits are too small ou too big. You should scale the data.")
-    }
-  }
-  dados
-}
-
-
-rrcDataF<-function(local, s = " ", d = ".", h = FALSE, md = c(""," ","NA"),
-                   colsPed = NULL, colsTraits, colsDate = NULL){
+  if(is.null(local) == FALSE){
     #Data reading
     tipo<-stringr::str_extract(local,"(\\w+)$")
     if(tipo == basename(local)){
@@ -92,28 +58,31 @@ rrcDataF<-function(local, s = " ", d = ".", h = FALSE, md = c(""," ","NA"),
 
            print("I did not detect the type of the file.")
     )
+  }else{
+    dados<-as.data.frame(dataObj)
+  }
 
   ##########
   #Recoding#
   ##########
-    for(i in 1:length(dados)){
-      if(all(i != c(colsPed, colsTraits, colsDate))){
-        tempData<-unique(dados[[i]])
-        codes<-1:length(tempData)
-        mapa<-data.frame(tempData, codes)
-        names(mapa)<-c("Original.Codes", "Recode")
-        index<-match(dados[[i]],mapa$Original.Codes)
-        dados[,i]<-mapa$Recode[index]
-      }
+  for(i in 1:length(dados)){
+    if(all(i != c(colsPed, colsTraits))){
+      tempData<-unique(dados[[i]])
+      codes<-1:length(tempData)
+      mapa<-data.frame(tempData, codes)
+      names(mapa)<-c("Original.Codes", "Recode")
+      index<-match(dados[[i]],mapa$Original.Codes)
+      dados[,i]<-mapa$Recode[index]
     }
+  }
 
-  #Checking if the file is ASCII
+  #Checking if the characters are ASCII
   dadosTemp<-NULL
   dadosTemp<-sapply(dados, paste0, collapse = " ")
   stopifnot(all(grepl("^[ -~]+$", dadosTemp)))
 
-  #checking if all values are numeric
-  effects<-as.data.frame(dados[,-c(colsTraits, colsPed, colsDate)])
+  #checking if all values are positive
+  effects<-as.data.frame(dados[,-c(colsTraits, colsPed)])
   for(i in 1:length(effects)){
     if(any(effects[,i] < 0)){
       stop("All values should be positive.")
@@ -127,7 +96,7 @@ rrcDataF<-function(local, s = " ", d = ".", h = FALSE, md = c(""," ","NA"),
 
   #Checking if variances of traits are within a reasonable interval
   if(!is.null((colsTraits))){
-    varTemp<-sapply(dados[, colsTraits], stats::var, na.rm = TRUE)
+    varTemp<-sapply(as.data.frame(dados[, colsTraits]), function(x){stats::var(x, na.rm = TRUE)})
     if(any(varTemp < 1e-5 | varTemp > 1e5)){
       warning("Variances of the traits are too small ou too big. You should scale the data.")
     }
