@@ -3,7 +3,7 @@
 #' @param pedigreeObj object with pedigree data
 #' @param local data file path
 #' @param s field/column separator
-#' @param h logical value indicating presence of header in data file
+#' @param h logical value indicating presence of header in pedigree file
 #' @param isd vector of columns number for individual, sire and dam
 #' @param missData missing data indicator
 #' @param udata unformatted data object

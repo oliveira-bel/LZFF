@@ -1,19 +1,19 @@
 #' Read, recode and check Data and Pedigree
 #'
-#' @param dataObj
-#' @param colsPed
-#' @param colsTraits
-#' @param localData
-#' @param sData
-#' @param dData
-#' @param hData
-#' @param md
-#' @param pedObj
-#' @param colsPedData.isd
-#' @param localPed
-#' @param sPed
-#' @param hPed
-#' @param ped.isd
+#' @param dataObj data frame with data after a consistency analysis
+#' @param colsPed identification of columns related to pedigree data in data object/file
+#' @param colsTraits identification of columns related to traits
+#' @param localData data file path
+#' @param sData field/column separator in data file
+#' @param dData decimal point used in data file
+#' @param hData logical value indicating presence of header in data object/file
+#' @param md missing data indicator
+#' @param pedObj object with pedigree data
+#' @param colsPedData.isd identification of columns with pedigree information in the unformatted data object in the order individual, sire, dam
+#' @param localPed data file path
+#' @param sPed field/column separator in pedigree file
+#' @param hPed logical value indicating presence of header in pedigree file
+#' @param ped.isd vector of columns number for individual, sire and dam in pedigree object/file
 #'
 #' @returns
 #' @export

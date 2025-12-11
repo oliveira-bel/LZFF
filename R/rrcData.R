@@ -18,16 +18,16 @@
 rrcData<-function(datObj = NULL, colsPdg = NULL, colsTrts = NULL, local = NULL, s = " ",
                   d = ".", h = FALSE, missData = c(""," ","NA")){
   #Validation
-  argTest<-as.character(sum(!is.null(local), !is.null(dataObj)))
+  argTest<-as.character(sum(!is.null(local), !is.null(datObj)))
   switch(argTest,
          '0' = stop("You must provide EXACTLY ONE of the following arguments:\n",
                   "-'local': path to the file (character)\n",
-                  "-'dataObj': R object (data.frame)\n",
+                  "-'datObj': R object (data.frame)\n",
                   "Both cannot be NULL at the same time", call. = FALSE),
 
          '2' = stop("You must provide ONLY ONE of the following arguments:\n",
                   "-'local': path to the file (character)\n",
-                  "-'dataObj': R object (data.frame)\n",
+                  "-'datObj': R object (data.frame)\n",
                   "Both cannot be provided simultaneously", call. = FALSE))
 
   if(is.null(local) == FALSE){
@@ -41,32 +41,32 @@ rrcData<-function(datObj = NULL, colsPdg = NULL, colsTrts = NULL, local = NULL, 
     }
     switch(tipo,
            csv = dados<-utils::read.csv(local, header = h, sep = s, dec = d,
-                                        strip.white = FALSE, na.strings = md, fill = TRUE),
+                                        strip.white = FALSE, na.strings = missData, fill = TRUE),
 
-           xls = dados<-as.data.frame(readxl::read_excel(local, na = md, col_names = h)),
+           xls = dados<-as.data.frame(readxl::read_excel(local, na = missData, col_names = h)),
 
-           xlsx = dados<-as.data.frame(readxl::read_excel(local, na = md, col_names = h)),
+           xlsx = dados<-as.data.frame(readxl::read_excel(local, na = missData, col_names = h)),
 
-           ods = dados<-as.data.frame(readODS::read_ods(local, na = md, col_names = h)),
+           ods = dados<-as.data.frame(readODS::read_ods(local, na = missData, col_names = h)),
 
            gsheet = {googlesheets4::gs4_auth()
-             dados<-as.data.frame(googlesheets4::read_sheet(local, na = md),
+             dados<-as.data.frame(googlesheets4::read_sheet(local, na = missData),
                                   col_names = h)},
 
            txt = dados<-utils::read.table(local, header = h, sep = s, dec = d,
-                                          strip.white = FALSE, na.strings = md, fill = TRUE),
+                                          strip.white = FALSE, na.strings = missData, fill = TRUE),
 
            print("I did not detect the type of the file.")
     )
   }else{
-    dados<-as.data.frame(dataObj)
+    dados<-as.data.frame(datObj)
   }
 
   ##########
   #Recoding#
   ##########
   for(i in 1:length(dados)){
-    if(all(i != c(colsPed, colsTraits))){
+    if(all(i != c(colsPdg, colsTrts))){
       tempData<-unique(dados[[i]])
       codes<-1:length(tempData)
       mapa<-data.frame(tempData, codes)
@@ -82,7 +82,7 @@ rrcData<-function(datObj = NULL, colsPdg = NULL, colsTrts = NULL, local = NULL, 
   stopifnot(all(grepl("^[ -~]+$", dadosTemp)))
 
   #checking if all values are positive
-  effects<-as.data.frame(dados[,-c(colsTraits, colsPed)])
+  effects<-as.data.frame(dados[,-c(colsTrts, colsPdg)])
   for(i in 1:length(effects)){
     if(any(effects[,i] < 0)){
       stop("All values should be positive.")
@@ -95,8 +95,8 @@ rrcData<-function(datObj = NULL, colsPdg = NULL, colsTrts = NULL, local = NULL, 
   }
 
   #Checking if variances of traits are within a reasonable interval
-  if(!is.null((colsTraits))){
-    varTemp<-sapply(as.data.frame(dados[, colsTraits]), function(x){stats::var(x, na.rm = TRUE)})
+  if(!is.null((colsTrts))){
+    varTemp<-sapply(as.data.frame(dados[, colsTrts]), function(x){stats::var(x, na.rm = TRUE)})
     if(any(varTemp < 1e-5 | varTemp > 1e5)){
       warning("Variances of the traits are too small ou too big. You should scale the data.")
     }
