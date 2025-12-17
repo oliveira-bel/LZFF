@@ -4,7 +4,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of LZFF is to ...
+The goal of LZFF is to ... teste
 
 ## Installation
 
