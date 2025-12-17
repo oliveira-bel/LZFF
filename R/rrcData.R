@@ -8,6 +8,7 @@
 #' @param missData missing data indicator
 #' @param colsPdg identification of columns related to pedigree data
 #' @param colsTrts identification of columns related to traits
+#' @param colsDts identification of columns related to Dates
 #'
 #' @description
 #' Simple function for read, recode and perform some checks in a data file.
@@ -15,8 +16,10 @@
 #' @return a data frame with data file columns read and recoded as needed. Pedigree data are not recoded by this function
 #' @export
 
-rrcData<-function(datObj = NULL, colsPdg = NULL, colsTrts = NULL, local = NULL, s = " ",
-                  d = ".", h = FALSE, missData = c(""," ","NA")){
+rrcData<-function(datObj = NULL, colsPdg = NULL, colsTrts = NULL, colsDts = NULL,
+                  local = NULL, s = " ", d = ".", h = FALSE, missData = c(""," ","NA"),
+                  rm.cols = NULL){
+
   #Validation
   argTest<-as.character(sum(!is.null(local), !is.null(datObj)))
   switch(argTest,
@@ -60,13 +63,18 @@ rrcData<-function(datObj = NULL, colsPdg = NULL, colsTrts = NULL, local = NULL, 
     )
   }else{
     dados<-as.data.frame(datObj)
+    print(dados)
+  }
+
+  if(!is.null(rm.cols)){
+   dados<-dados[,-rm.cols]
   }
 
   ##########
   #Recoding#
   ##########
   for(i in 1:length(dados)){
-    if(all(i != c(colsPdg, colsTrts))){
+    if(all(i != c(colsPdg, colsTrts, colsDts))){
       tempData<-unique(dados[[i]])
       codes<-1:length(tempData)
       mapa<-data.frame(tempData, codes)
@@ -82,7 +90,7 @@ rrcData<-function(datObj = NULL, colsPdg = NULL, colsTrts = NULL, local = NULL, 
   stopifnot(all(grepl("^[ -~]+$", dadosTemp)))
 
   #checking if all values are positive
-  effects<-as.data.frame(dados[,-c(colsTrts, colsPdg)])
+  effects<-as.data.frame(dados[,-c(colsTrts, colsPdg, colsDts)])
   for(i in 1:length(effects)){
     if(any(effects[,i] < 0)){
       stop("All values should be positive.")
