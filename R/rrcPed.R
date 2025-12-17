@@ -18,7 +18,8 @@
 #' @export
 #'
 rrcPed<-function(pedigreeObj = NULL, isd = c(1, 2, 3), udata, colsPdgDat.isd = c(1, 2, 3),
-                 local = NULL, s = " ", h = FALSE, missData = c(""," ","NA")){
+                 local = NULL, s = " ", h = FALSE, missData = c(""," ","NA"),
+                 rm.cols = NULL){
 
   #Validation
   argTest<-as.character(sum(!is.null(local), !is.null(pedigreeObj)))
@@ -65,6 +66,10 @@ rrcPed<-function(pedigreeObj = NULL, isd = c(1, 2, 3), udata, colsPdgDat.isd = c
     )}else{
       pedData<-pedigreeObj
     }
+
+  if(!is.null(rm.cols)){
+   pedData<-pedigreeObj[,-rm.cols]
+  }
 
   #reorganizing columns
   pedData<-data.frame(pedData[,isd])
