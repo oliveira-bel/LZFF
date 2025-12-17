@@ -5,7 +5,7 @@
 #' @param mp code for missing parents
 #' @param s field/column separator
 #' @param EoL end of line symbol
-#' @param map data frame with two colums: Original codes and Recodes
+#' @param map logical value indicating if the code map should be printed
 #' @param mapof map output file's name
 #' @param rm.col identification of the columns to be removed
 #'
@@ -14,7 +14,7 @@
 #'
 #' @examples
 formatPed<-function(pedObj, of = "pedigree.txt", mp = 0, s = " ", EoL = "\n",
-                    map = FALSE, mapof = "map.txt", rm.col = 4){
+                    map = FALSE, mapof = "map.txt"){
 
   #Replacing absent parents in the pedigree object
   pedObj$ped<-replace(pedObj$ped, list = is.na(pedObj$ped), values = mp)
@@ -23,9 +23,6 @@ formatPed<-function(pedObj, of = "pedigree.txt", mp = 0, s = " ", EoL = "\n",
   dadosPedTemp<-NULL
   dadosPedTemp<-sapply(pedObj$ped, paste0, collapse = " ")
   stopifnot(all(grepl("^[ -~]+$", dadosPedTemp)))
-
-  #Removing columns
-  pedObj$ped<-pedObj$ped[,-rm.col]
 
   if(map){
     utils::write.table(pedObj$ped, of, sep = s, eol = EoL,
