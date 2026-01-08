@@ -17,8 +17,7 @@
 #' @export
 
 rrcData<-function(datObj = NULL, colsPdg = NULL, colsTrts = NULL, colsDts = NULL,
-                  local = NULL, s = " ", d = ".", h = FALSE, missData = c(""," ","NA"),
-                  rm.cols = NULL){
+                  local = NULL, s = " ", d = ".", h = FALSE, missData = c(""," ","NA")){
 
   #Validation
   argTest<-as.character(sum(!is.null(local), !is.null(datObj)))
@@ -64,10 +63,6 @@ rrcData<-function(datObj = NULL, colsPdg = NULL, colsTrts = NULL, colsDts = NULL
   }else{
     dados<-as.data.frame(datObj)
     print(dados)
-  }
-
-  if(!is.null(rm.cols)){
-   dados<-dados[,-rm.cols]
   }
 
   ##########

@@ -24,15 +24,15 @@ rrcDataPed<-function(dataObj = NULL, pedObj = NULL, localData = NULL,
                      localPed = NULL, colsTraits = NULL, colsDates = NULL,
                      colsPedData.isd = 1:3, ped.isd = 1:3, sData = " ",
                      dData = ".", hData = FALSE, sPed = " ", hPed = FALSE,
-                     md = c(""," ","NA"), rm.colsData = NULL, rm.colsPed = NULL){
+                     md = c(""," ","NA")){
 
   udata<-rrcData(datObj = dataObj, colsPdg = colsPedData.isd, colsTrts = colsTraits,
                  colsDts = colsDates, local = localData, s = sData, d = dData,
-                 h = hData, missData = md, rm.cols = rm.colsData)
+                 h = hData, missData = md)
 
   fDataPed<-rrcPed(pedigreeObj = pedObj, isd = ped.isd, udata,
                    colsPdgDat.isd = colsPedData.isd, local = localPed, s = sPed,
-                   h = hPed, missData = md, rm.cols = rm.colsPed)
+                   h = hPed, missData = md)
 
   fDataPed
 }
@@ -63,7 +63,6 @@ rrcDataPed<-function(dataObj = NULL, pedObj = NULL, localData = NULL,
 #' @param sep field/column separator
 #' @param printMap logical value indicating if the code map should be printed
 #' @param mof map output file's name
-#' @param rm.columnsPed identification of the columns to be removed in the pedigree
 #'
 #' @returns
 #' @export
@@ -72,8 +71,8 @@ rrcDataPed<-function(dataObj = NULL, pedObj = NULL, localData = NULL,
 wombat<-function(dObj = NULL, pObj = NULL, cTraits = NULL, cPedDat.isd = NULL,
                  cDates = NULL, pdg.isd = c(1, 2, 3), dataFile = NULL,
                  pedFile = NULL, sDat = " ", dDat = ".", hDat = FALSE,
-                 rm.columnsData = NULL, sPdg = " ", hPdg = FALSE, rm.columnsPed = NULL,
-                 missingData = c(""," ","NA"), dof = "formatB_data", omdat = "-99999", trts = NULL,
+                 sPdg = " ", hPdg = FALSE, missingData = c(""," ","NA"),
+                 dof = "formatB_data", omdat = "-99999", trts = NULL,
                  width = NULL, endOfLine = "\n", pof = "pedigree.txt", mparents = 0,
                  sep = " ", printMap = FALSE, mof = "map.txt"){
 
@@ -81,14 +80,13 @@ wombat<-function(dObj = NULL, pObj = NULL, cTraits = NULL, cPedDat.isd = NULL,
                           colsPedData.isd = cPedDat.isd, ped.isd = pdg.isd,
                           localData = dataFile, localPed = pedFile, sData = sDat,
                           dData = dDat, hData = hDat, sPed = sPdg, hPed = hPdg,
-                          md = missingData, rm.colsData = rm.columnsData,
-                          rm.colsPed = rm.columnsPed)
+                          md = missingData)
 
     formatB(dataPed = listDataPed, of = dof, omd = omdat, traits = trts,
             widths = width, EoL = endOfLine)
 
     formatPed(pedObj = listDataPed, of = pof, mp = mparents, s = sep, EoL = endOfLine,
-            map = printMap, mapof = mof, rm.cols = rm.columnsPed)
+            map = printMap, mapof = mof)
 
     listDataPed
 }
