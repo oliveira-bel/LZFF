@@ -1,13 +1,14 @@
 #' Read, Recod and check Pedigree Data
 #'
 #' @param pedigreeObj object with pedigree data
+#' @param isd vector of columns number for individual, sire and dam
+#' @param udata unformatted data object
+#' @param colsPdgDat.isd identification of columns with pedigree information in the unformatted data object in the order individual, sire, dam
 #' @param local data file path
 #' @param s field/column separator
 #' @param h logical value indicating presence of header in pedigree file
-#' @param isd vector of columns number for individual, sire and dam
 #' @param missData missing data indicator
-#' @param udata unformatted data object
-#' @param colsPdgDat.isd identification of columns with pedigree information in the unformatted data object in the order individual, sire, dam
+#'
 #'
 #' @description
 #' Simple function for read, recode, format and perform checks in a pedigree file.

@@ -1,19 +1,19 @@
 #' Formatting Data
 #'
-#' @param udata data frame received from rrcData function with unformatted data.
+#' @param dataList list containing recoded pedigree and data.
 #' @param of output file name.
 #' @param omd missing data value to be written in the output file.
 #' @param traits vector indicating traits columns.
 #' @param widths vector specifying the widths of columns in the formatted file.
 #' @param EoL end of line indicator. Unix and Linux uses "\\n", while Windows uses "\\r\\n".
 #'
-#' @returns a formatted file.
+#' @returns a formatted data file.
 #' @export
 #'
-formatB<-function(dataPed, of = "formatB_data", omd = "-99999", traits = NULL,
+formatB<-function(dataList, of = "formatB_data", omd = "-99999", traits = NULL,
                   widths = NULL, EoL = "\n"){
 
-  udata<-dataPed$data
+  udata<-dataList$data
 
   if(stringr::str_detect(of,"#")){
     stop("File name cannot contain a #. Choose a name without a #")

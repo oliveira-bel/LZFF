@@ -11,9 +11,9 @@
 #' @param colsDts identification of columns related to Dates
 #'
 #' @description
-#' Simple function for read, recode and perform some checks in a data file.
+#' Simple function for read, recode and perform some checks in a data file. Pedigree data are not recoded by this function.
 #'
-#' @return a data frame with data file columns read and recoded as needed. Pedigree data are not recoded by this function
+#' @returns a data frame with data file columns read and recoded as needed.
 #' @export
 
 rrcData<-function(datObj = NULL, colsPdg = NULL, colsTrts = NULL, colsDts = NULL,

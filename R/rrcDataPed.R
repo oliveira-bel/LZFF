@@ -1,22 +1,21 @@
 #' Read, recode and check Data and Pedigree
 #'
 #' @param dataObj data frame with data after a consistency analysis
-#' @param colsPed identification of columns related to pedigree data in data object/file
+#' @param pedObj object with pedigree data
+#' @param localData data file path
+#' @param localPed data file path
 #' @param colsTraits identification of columns related to traits
 #' @param colsDates identification of columns related to Dates
-#' @param localData data file path
+#' @param colsPedData.isd identification of columns with pedigree information in the unformatted data object in the order individual, sire, dam
+#' @param ped.isd vector of columns number for individual, sire and dam in pedigree object/file
 #' @param sData field/column separator in data file
 #' @param dData decimal point used in data file
 #' @param hData logical value indicating presence of header in data object/file
-#' @param md missing data indicator
-#' @param pedObj object with pedigree data
-#' @param colsPedData.isd identification of columns with pedigree information in the unformatted data object in the order individual, sire, dam
-#' @param localPed data file path
 #' @param sPed field/column separator in pedigree file
 #' @param hPed logical value indicating presence of header in pedigree file
-#' @param ped.isd vector of columns number for individual, sire and dam in pedigree object/file
+#' @param md missing data indicator
 #'
-#' @returns
+#' @returns a list with the following components: recode map, recoded and checked data ane recoded and checked pedigree
 #' @export
 #'
 #' @examples
@@ -37,12 +36,13 @@ rrcDataPed<-function(dataObj = NULL, pedObj = NULL, localData = NULL,
   fDataPed
 }
 
-#' Title
+#' Title Read, recod, check and format pedigree and data.
 #'
 #' @param dObj data frame with data after a consistency analysis
 #' @param pObj object with pedigree data
 #' @param cTraits identification of columns related to traits
 #' @param cPedDat.isd identification of columns with pedigree information in the unformatted data object in the order individual, sire, dam
+#' @param cDates columns with dates
 #' @param pdg.isd vector of columns number for individual, sire and dam in pedigree object/file
 #' @param dataFile data file path
 #' @param pedFile data file path
@@ -52,7 +52,6 @@ rrcDataPed<-function(dataObj = NULL, pedObj = NULL, localData = NULL,
 #' @param sPdg field/column separator in pedigree file
 #' @param hPdg logical value indicating presence of header in pedigree file
 #' @param missingData missing data indicator
-#' @param listDataPed list containing data, pedigree and the code map
 #' @param dof data output file's name
 #' @param omdat missing data value to be written in the output file
 #' @param trts vector indicating traits columns to be printed
@@ -64,11 +63,11 @@ rrcDataPed<-function(dataObj = NULL, pedObj = NULL, localData = NULL,
 #' @param printMap logical value indicating if the code map should be printed
 #' @param mof map output file's name
 #'
-#' @returns
+#' @returns a list with the following components: recode map, recoded and checked data ane recoded and checked pedigree; formatted data and pedigree files.
 #' @export
 #'
 #' @examples
-wombat<-function(dObj = NULL, pObj = NULL, cTraits = NULL, cPedDat.isd = NULL,
+fw<-function(dObj = NULL, pObj = NULL, cTraits = NULL, cPedDat.isd = NULL,
                  cDates = NULL, pdg.isd = c(1, 2, 3), dataFile = NULL,
                  pedFile = NULL, sDat = " ", dDat = ".", hDat = FALSE,
                  sPdg = " ", hPdg = FALSE, missingData = c(""," ","NA"),
@@ -82,10 +81,10 @@ wombat<-function(dObj = NULL, pObj = NULL, cTraits = NULL, cPedDat.isd = NULL,
                           dData = dDat, hData = hDat, sPed = sPdg, hPed = hPdg,
                           md = missingData)
 
-    formatB(dataPed = listDataPed, of = dof, omd = omdat, traits = trts,
+    formatB(dataList = listDataPed, of = dof, omd = omdat, traits = trts,
             widths = width, EoL = endOfLine)
 
-    formatPed(pedObj = listDataPed, of = pof, mp = mparents, s = sep, EoL = endOfLine,
+    formatPed(dataList = listDataPed, of = pof, mp = mparents, s = sep, EoL = endOfLine,
             map = printMap, mapof = mof)
 
     listDataPed
