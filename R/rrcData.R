@@ -1,5 +1,8 @@
 #' Read, recode and check
 #'
+#' @description
+#' This is a simple function for reading, recoding, and performing some checks on a data file. This function does not recode pedigree data.
+#'
 #' @param datObj data frame with data after a consistency analysis
 #' @param local data file path
 #' @param s field/column separator
@@ -10,8 +13,6 @@
 #' @param colsTrts identification of columns related to traits
 #' @param colsDts identification of columns related to Dates
 #'
-#' @description
-#' Simple function for read, recode and perform some checks in a data file. Pedigree data are not recoded by this function.
 #'
 #' @returns a data frame with data file columns read and recoded as needed.
 #' @export

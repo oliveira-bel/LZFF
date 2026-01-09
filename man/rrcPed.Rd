@@ -5,29 +5,32 @@
 \title{Read, Recod and check Pedigree Data}
 \usage{
 rrcPed(
-  local,
-  s,
+  pedigreeObj = NULL,
+  isd = c(1, 2, 3),
+  udata,
+  colsPdgDat.isd = c(1, 2, 3),
+  local = NULL,
+  s = " ",
   h = FALSE,
-  isdd = c(1, 2, 3, 4),
-  md = c("", " ", "NA"),
-  colsPedData = c(1, 2, 3),
-  udata
+  missData = c("", " ", "NA")
 )
 }
 \arguments{
+\item{pedigreeObj}{object with pedigree data}
+
+\item{isd}{vector of columns number for individual, sire and dam}
+
+\item{udata}{unformatted data object}
+
+\item{colsPdgDat.isd}{identification of columns with pedigree information in the unformatted data object in the order individual, sire, dam}
+
 \item{local}{data file path}
 
 \item{s}{field/column separator}
 
-\item{h}{logical value indicating presence of header in data file}
+\item{h}{logical value indicating presence of header in pedigree file}
 
-\item{isdd}{vector of columns number for individual, sire, dam and date of birth}
-
-\item{md}{missing data indicator}
-
-\item{colsPedData}{identification of columns with pedigree information in data object}
-
-\item{udata}{unformatted data object}
+\item{missData}{missing data indicator}
 }
 \value{
 a list with three components: 1. a data frame with code map; 2. a data
@@ -35,5 +38,5 @@ frame with the formatted pedigree data; 3. a data frame with pedigree columns
 in data recoded.
 }
 \description{
-Simple function for read, recode, format and perform checks in a pedigree file.
+This is a simple function for reading, recoding, and performing some checks on a data file. This function does not recode pedigree data.
 }

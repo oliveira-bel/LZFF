@@ -5,7 +5,7 @@
 \title{Formatting Data}
 \usage{
 formatB(
-  udata,
+  dataList,
   of = "formatB_data",
   omd = "-99999",
   traits = NULL,
@@ -14,7 +14,7 @@ formatB(
 )
 }
 \arguments{
-\item{udata}{data frame received from rrcData function with unformatted data.}
+\item{dataList}{list containing recoded pedigree and data.}
 
 \item{of}{output file name.}
 
@@ -27,8 +27,8 @@ formatB(
 \item{EoL}{end of line indicator. Unix and Linux uses "\\n", while Windows uses "\\r\\n".}
 }
 \value{
-a formatted file.
+a formatted data file.
 }
 \description{
-Formatting Data
+It creates a formatted data file based on the software Wombat's requirements for genetic evaluations.
 }
