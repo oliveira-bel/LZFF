@@ -24,9 +24,9 @@
 #'
 #' The first two checks aim to guarantee that common requirements for genetic evaluation
 #' softwares are met. Checking whether the integer values are greater than the presented
-#' value ensures that data can be processed by multiple systems. The final check aims
-#' to prevent numerical problems in iterative processes, which are typically used in
-#' genetic analyses.
+#' value ensures that data can be processed by multiple genetic evaluations softwares.
+#' The final check aims to prevent numerical problems in iterative processes,
+#' which are typically used in genetic analyses.
 #'
 #' @returns a data frame with data file columns read and recoded as needed.
 #'
