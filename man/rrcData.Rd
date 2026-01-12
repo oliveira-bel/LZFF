@@ -41,6 +41,21 @@ a data frame with data file columns read and recoded as needed.
 \description{
 This is a simple function for reading, recoding, and performing some checks on a data file. This function does not recode pedigree data.
 }
+\details{
+The rrcData function reads data from a file and stores it in a data frame.
+Otherwise, it uses the data object provided by the user via the datObj argument. The first
+action of the function recodes the environmental effects, or more generally, the effects
+which were not indicated as being associated with pedigree, traits, or date. After that, it
+It is then checked whether all characters in the data object are ASCII and whether the recoded values are all
+positive, if the integers are less than or equal to 2,147,483,647, and if the variances are within
+the interval 1E-5 to 1E5. Failure in any of these checks stops the function.
+
+The first two checks aim to guarantee that common requirements for genetic evaluation
+softwares are met. Checking whether the integer values are greater than the presented
+value ensures that data can be processed by multiple systems. The final check aims
+to prevent numerical problems in iterative processes, which are typically used in
+genetic analyses.
+}
 \examples{
 # Creating data
 data<-data.frame(id = paste0("i", 1:5), sire = paste0("s", c(rep(1, 2), rep(2, 2), 3)),
