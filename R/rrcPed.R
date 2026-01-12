@@ -16,6 +16,12 @@
 #' frame with the formatted pedigree data; 3. a data frame with pedigree columns
 #' in data recoded.
 #' @export
+#' @examples
+#' #criando exempo do pedigree
+#' x<- data.frame(id   = c("Carlos", "Maria", "Joao", "Ana", "Pedro"),sire = c(NA,      NA,      "Carlos", "Carlos", "Joao"),dam  = c(NA,      NA,      "Maria",  "Maria",  "Ana"))
+#'
+#' #analizando os dados de pedigree
+#' rrcPed<-function(pedigreeObj = NULL, isd = c(1, 2, 3),udata = x, colsPdgDat.isd = c(1, 2, 3),local = NULL, s = " ", h = FALSE, missData = c(""," ","NA"))
 #'
 rrcPed<-function(pedigreeObj = NULL, isd = c(1, 2, 3), udata, colsPdgDat.isd = c(1, 2, 3),
                  local = NULL, s = " ", h = FALSE, missData = c(""," ","NA")){
