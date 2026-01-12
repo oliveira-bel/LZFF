@@ -41,3 +41,17 @@ a data frame with data file columns read and recoded as needed.
 \description{
 This is a simple function for reading, recoding, and performing some checks on a data file. This function does not recode pedigree data.
 }
+\examples{
+# Creating data
+data<-data.frame(id = paste0("i", 1:5), sire = paste0("s", c(rep(1, 2), rep(2, 2), 3)),
+dam = paste0("d", 1:5), cg = gl(n = 2, k = 2, length = 5, labels = c("gc1", "gc2")),
+bwd = as.Date(c("2014-10-02", "2014-02-15", "2017-06-30", "2017-06-14", "2016-07-01"), format = "\%Y-\%m-\%d"),
+trt1 = rnorm(5, 2, 2), trt2 = rnorm(5, 10, 3))
+data
+
+# Recoding and checking data
+# All data must pass the checks and the cg colum must be recoded
+rcData<-rrcData(datObj = data, colsPdg = 1:3, colsTrts = 6:7, colsDts = 5)
+rcData
+
+}
