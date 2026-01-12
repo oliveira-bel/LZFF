@@ -15,6 +15,8 @@
 #'
 #' @return a data frame with data file columns read and recoded as needed. Pedigree data are not recoded by this function
 #' @export
+#'
+#'
 
 rrcData<-function(datObj = NULL, colsPdg = NULL, colsTrts = NULL, colsDts = NULL,
                   local = NULL, s = " ", d = ".", h = FALSE, missData = c(""," ","NA")){
