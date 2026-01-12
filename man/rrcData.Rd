@@ -5,17 +5,26 @@
 \title{Read, recode and check}
 \usage{
 rrcData(
-  local,
-  s,
-  d,
+  datObj = NULL,
+  colsPdg = NULL,
+  colsTrts = NULL,
+  colsDts = NULL,
+  local = NULL,
+  s = " ",
+  d = ".",
   h = FALSE,
-  md = c("", " ", "NA"),
-  colsPed,
-  colsTraits,
-  colsDate
+  missData = c("", " ", "NA")
 )
 }
 \arguments{
+\item{datObj}{data frame with data after a consistency analysis}
+
+\item{colsPdg}{identification of columns related to pedigree data}
+
+\item{colsTrts}{identification of columns related to traits}
+
+\item{colsDts}{identification of columns related to Dates}
+
 \item{local}{data file path}
 
 \item{s}{field/column separator}
@@ -24,13 +33,7 @@ rrcData(
 
 \item{h}{logical value indicating presence of header in data file}
 
-\item{md}{missing data indicator}
-
-\item{colsPed}{identification of columns related to pedigree data}
-
-\item{colsTraits}{identification of columns related to traits}
-
-\item{colsDate}{identification of columns related to Dates}
+\item{missData}{missing data indicator}
 }
 \value{
 a data frame with data file columns read and recoded as needed. Pedigree data are not recoded by this function
