@@ -12,7 +12,7 @@
 #' @returns
 #' @export
 #'
-#' @examples
+#'
 formatPed<-function(pedObj, of = "pedigree.txt", mp = 0, s = " ", EoL = "\n",
                     map = FALSE, mapof = "map.txt"){
 
