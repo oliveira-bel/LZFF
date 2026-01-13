@@ -25,6 +25,8 @@ formatB(
 \item{widths}{vector specifying the widths of columns in the formatted file.}
 
 \item{EoL}{end of line indicator. Unix and Linux uses "\\n", while Windows uses "\\r\\n".}
+
+\item{udata}{data frame received from rrcData function with unformatted data.}
 }
 \value{
 a formatted data file.
