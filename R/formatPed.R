@@ -1,5 +1,8 @@
 #' Format Pedigree Files
 #'
+#' @description
+#' It creates a formatted pedigree file based on the software Wombat's requirements for genetic evaluations.
+#'
 #' @param dataList list containing recoded pedigree and data.
 #' @param of output file's name for pedigree file
 #' @param mp code for missing parents

@@ -1,11 +1,15 @@
 #' Formatting Data
 #'
+#' @description
+#' It creates a formatted data file based on the software Wombat's requirements for genetic evaluations.
+#'
 #' @param dataList list containing recoded pedigree and data.
 #' @param of output file name.
 #' @param omd missing data value to be written in the output file.
 #' @param traits vector indicating traits columns.
 #' @param widths vector specifying the widths of columns in the formatted file.
 #' @param EoL end of line indicator. Unix and Linux uses "\\n", while Windows uses "\\r\\n".
+#'
 #'
 #' @returns a formatted data file.
 #' @export

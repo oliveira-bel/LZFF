@@ -5,7 +5,7 @@
 \title{Format Pedigree Files}
 \usage{
 formatPed(
-  pedObj,
+  dataList,
   of = "pedigree.txt",
   mp = 0,
   s = " ",
@@ -15,6 +15,8 @@ formatPed(
 )
 }
 \arguments{
+\item{dataList}{list containing recoded pedigree and data.}
+
 \item{of}{output file's name for pedigree file}
 
 \item{mp}{code for missing parents}
@@ -26,11 +28,10 @@ formatPed(
 \item{map}{logical value indicating if the code map should be printed}
 
 \item{mapof}{map output file's name}
-
-\item{ped}{object of type list with 3 elements: map, ped and data}
-
-\item{rm.col}{identification of the columns to be removed}
+}
+\value{
+a formatted pedigree file.
 }
 \description{
-Format Pedigree Files
+It creates a formatted pedigree file based on the software Wombat's requirements for genetic evaluations.
 }

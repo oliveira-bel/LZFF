@@ -1,5 +1,8 @@
 #' Read, Recod and check Pedigree Data
 #'
+#' @description
+#' This is a simple function for reading, recoding, and performing some checks on a data file. This function does not recode pedigree data.
+#'
 #' @param pedigreeObj object with pedigree data
 #' @param isd vector of columns number for individual, sire and dam
 #' @param udata unformatted data object
@@ -9,9 +12,6 @@
 #' @param h logical value indicating presence of header in pedigree file
 #' @param missData missing data indicator
 #'
-#'
-#' @description
-#' Simple function for read, recode, format and perform checks in a pedigree file.
 #'
 #' @returns a list with three components: 1. a data frame with code map; 2. a data
 #' frame with the formatted pedigree data; 3. a data frame with pedigree columns

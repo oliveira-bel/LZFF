@@ -2,5 +2,8 @@
 
 export(formatA)
 export(formatB)
+export(formatPed)
+export(fw)
 export(rrcData)
+export(rrcDataPed)
 export(rrcPed)
