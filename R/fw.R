@@ -32,13 +32,27 @@
 #' @export
 #'
 #' @examples
+#' # Creating data
+#' data<-data.frame(id = paste0("i", 1:5), sire = paste0("s", c(rep(1, 2), rep(2, 2), 3)),
+#' dam = paste0("d", 1:5), cg = gl(n = 2, k = 2, length = 5, labels = c("gc1", "gc2")),
+#' bwd = as.Date(c("2014-10-02", "2014-02-15", "2017-06-30", "2017-06-14", "2016-07-01"), format = "%Y-%m-%d"),
+#' trt1 = rnorm(5, 2, 2), trt2 = rnorm(5, 10, 3))
+#' data
+#'
+#' # Creating pedigree data
+#' pedigree<-data[,1:3]
+#' pedigree
+#'
+#' #Creating the data file and pedigree file to be processed by the Wombat software
+#' fw(dObj = data, pObj = pedigree, cTraits = 6:7, cDates = 5, cPedDat.isd = 1:3,
+#' dof = "formatted_data.txt", pof = "ped.txt")
 #'
 fw<-function(dObj = NULL, pObj = NULL, cTraits = NULL, cPedDat.isd = NULL,
              cDates = NULL, pdg.isd = c(1, 2, 3), dataFile = NULL,
              pedFile = NULL, sDat = " ", dDat = ".", hDat = FALSE,
              sPdg = " ", hPdg = FALSE, missingData = c(""," ","NA"),
-             dof = "formatB_data", omdat = "-99999", trts = NULL,
-             width = NULL, endOfLine = "\n", pof = "pedigree.txt", mparents = 0,
+             dof = "formatB_data", omdat = "-99999", width = NULL,
+             endOfLine = "\n", pof = "pedigree.txt", mparents = 0,
              sep = " ", printMap = FALSE, mof = "map.txt"){
 
   listDataPed<-rrcDataPed(dataObj = dObj, pedObj = pObj, colsTraits = cTraits, colsDate = cDates,
@@ -47,7 +61,7 @@ fw<-function(dObj = NULL, pObj = NULL, cTraits = NULL, cPedDat.isd = NULL,
                           dData = dDat, hData = hDat, sPed = sPdg, hPed = hPdg,
                           md = missingData)
 
-  formatB(dataList = listDataPed, of = dof, omd = omdat, traits = trts,
+  formatB(dataList = listDataPed, of = dof, omd = omdat, traits = cTraits,
           widths = width, EoL = endOfLine)
 
   formatPed(dataList = listDataPed, of = pof, mp = mparents, s = sep, EoL = endOfLine,
