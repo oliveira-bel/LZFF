@@ -41,10 +41,10 @@ in data recoded.
 Simple function for read, recode, format and perform checks in a pedigree file.
 }
 \examples{
-#criando exempo do pedigree
-x<- data.frame(id   = c("Carlos", "Maria", "Joao", "Ana", "Pedro"),sire = c(NA,      NA,      "Carlos", "Carlos", "Joao"),dam  = c(NA,      NA,      "Maria",  "Maria",  "Ana"))
+#creating a pedigree example
+x<- data.frame(id   = c("id2", "s3", "id4", "id5", "id6"),sire = c("s3",      NA,      "s4", "s5", "s6"),dam  = c(NA,      NA,      "d1",  "d2",  "d3"))
 
-#analizando os dados de pedigree
+#analyzing pedigree data
 rrcPed<-function(pedigreeObj = NULL, isd = c(1, 2, 3),udata = x, colsPdgDat.isd = c(1, 2, 3),local = NULL, s = " ", h = FALSE, missData = c(""," ","NA"))
 
 }
