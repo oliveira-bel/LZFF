@@ -21,7 +21,6 @@ fw(
   missingData = c("", " ", "NA"),
   dof = "formatB_data",
   omdat = "-99999",
-  trts = NULL,
   width = NULL,
   endOfLine = "\\n",
   pof = "pedigree.txt",
@@ -64,8 +63,6 @@ fw(
 
 \item{omdat}{missing data value to be written in the output file}
 
-\item{trts}{vector indicating traits columns to be printed}
-
 \item{width}{vector specifying the widths of columns in the formatted file}
 
 \item{endOfLine}{end of line indicator. Unix and Linux uses "\\n", while Windows uses "\\r\\n"}
@@ -85,4 +82,21 @@ a list with the following components: recode map, recoded and checked data ane r
 }
 \description{
 This wrapper function reads, recodes, and performs checks on the data and pedigree files. In the end, it creates formatted data and pedigree files according to the requirements of the Wombat software for genetic evaluation.
+}
+\examples{
+# Creating data
+data<-data.frame(id = paste0("i", 1:5), sire = paste0("s", c(rep(1, 2), rep(2, 2), 3)),
+dam = paste0("d", 1:5), cg = gl(n = 2, k = 2, length = 5, labels = c("gc1", "gc2")),
+bwd = as.Date(c("2014-10-02", "2014-02-15", "2017-06-30", "2017-06-14", "2016-07-01"), format = "\%Y-\%m-\%d"),
+trt1 = rnorm(5, 2, 2), trt2 = rnorm(5, 10, 3))
+data
+
+# Creating pedigree data
+pedigree<-data[,1:3]
+pedigree
+
+#Creating the data file and pedigree file to be processed by the Wombat software
+fw(dObj = data, pObj = pedigree, cTraits = 6:7, cDates = 5, cPedDat.isd = 1:3,
+dof = "formatted_data.txt", pof = "ped.txt")
+
 }

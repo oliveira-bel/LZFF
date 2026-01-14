@@ -19,7 +19,6 @@
 #' @param missingData missing data indicator
 #' @param dof data output file's name
 #' @param omdat missing data value to be written in the output file
-#' @param trts vector indicating traits columns to be printed
 #' @param width vector specifying the widths of columns in the formatted file
 #' @param endOfLine end of line indicator. Unix and Linux uses "\\n", while Windows uses "\\r\\n"
 #' @param pof output file's name for pedigree file
@@ -55,7 +54,7 @@ fw<-function(dObj = NULL, pObj = NULL, cTraits = NULL, cPedDat.isd = NULL,
              endOfLine = "\n", pof = "pedigree.txt", mparents = 0,
              sep = " ", printMap = FALSE, mof = "map.txt"){
 
-  listDataPed<-rrcDataPed(dataObj = dObj, pedObj = pObj, colsTraits = cTraits, colsDate = cDates,
+  listDataPed<-rrcDataPed(dataObj = dObj, pedObj = pObj, colsTraits = cTraits, colsDates = cDates,
                           colsPedData.isd = cPedDat.isd, ped.isd = pdg.isd,
                           localData = dataFile, localPed = pedFile, sData = sDat,
                           dData = dDat, hData = hDat, sPed = sPdg, hPed = hPdg,
