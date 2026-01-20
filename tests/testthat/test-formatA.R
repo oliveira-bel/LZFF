@@ -25,3 +25,14 @@ test_that("formatA is working correctly", {
   # Clear the temporary file
   unlink(temp_file)
 })
+
+test_that("formatA throw an error when file's name contains a #", {
+  # Creating data
+  simudata <- data.frame(id = 1:2, trait = c(10, 20))
+
+  # Attempting to use a file's name with a #
+  expect_error(
+    formatA(udata = simudata, of = "filewitha#.txt"),
+    "File name cannot contain a #. Choose a name without a #"
+  )
+})
