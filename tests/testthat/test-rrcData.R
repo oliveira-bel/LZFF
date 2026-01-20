@@ -1,15 +1,15 @@
 test_that("reading files working csv", {
-  readFile<-rrcData(testthat::test_path("dataForTests", "DP-CA.csv"),
-                    s = ",", d = ".", h = TRUE, colsPdg = 1, colsTrts = 4:8,
-                    colsDts = NULL)
+  readFile<-rrcData(local = testthat::test_path("dataForTests", "DP-CA.csv"),
+                    s = ",", d = ".", h = TRUE, colsPdg = 3, colsTrts = 5:8,
+                    colsDts = 4)
 
   expect_equal(ncol(readFile), 8)
   expect_equal(nrow(readFile), 29)
 })
 
 test_that("reading files working txt", {
-  readFile<-rrcData(testthat::test_path("dataForTests", "DP.CA2.txt"),
-                    s = ",", d = ".", h = TRUE, colsPdg = 1, colsTrts = 4:8,
+  readFile<-rrcData(local = testthat::test_path("dataForTests", "DP.CA2.txt"),
+                    s = ",", d = ".", h = TRUE, colsPdg = 3, colsTrts = 4:8,
                     colsDts = NULL)
 
   expect_equal(ncol(readFile), 8)
@@ -17,8 +17,8 @@ test_that("reading files working txt", {
 })
 
 test_that("reading files working xls", {
-  readFile<-rrcData(testthat::test_path("dataForTests", "SDP.SCA2.xls"),
-                    s = ",", d = ".", h = TRUE, colsPdg = 1, colsTrts = 4:8,
+  readFile<-rrcData(local = testthat::test_path("dataForTests", "SDP.SCA2.xls"),
+                    s = ",", d = ".", h = TRUE, colsPdg = 3, colsTrts = 4:8,
                     colsDts = NULL)
 
   expect_equal(ncol(readFile), 8)
@@ -26,17 +26,17 @@ test_that("reading files working xls", {
 })
 
 test_that("reading files working xlsx", {
-  readFile<-rrcData(testthat::test_path("dataForTests", "DP.SCA2.xlsx"),
-                    s = ",", d = ".", h = TRUE, colsPdg = 1, colsTrts = 4:8,
-                    colsDts = NULL)
+  readFile<-rrcData(local = testthat::test_path("dataForTests", "DP.SCA2.xlsx"),
+                    s = ",", d = ".", h = TRUE, colsPdg = 1, colsTrts = 5:8,
+                    colsDts = 4)
 
   expect_equal(ncol(readFile), 8)
   expect_equal(nrow(readFile), 29)
 })
 
 test_that("reading files working Sem extensão", {
-  readFile<-rrcData(testthat::test_path("dataForTests", "SDPCA2"),
-                    s = ",", d = ".", h = TRUE, colsPdg = 1, colsTrts = 4:8,
+  readFile<-rrcData(local = testthat::test_path("dataForTests", "SDPCA2"),
+                    s = ",", d = ".", h = TRUE, colsPdg = 3, colsTrts = 4:8,
                     colsDts = NULL)
 
   expect_equal(ncol(readFile), 8)
@@ -44,9 +44,9 @@ test_that("reading files working Sem extensão", {
 })
 
 test_that("reading files working ODS", {
-  readFile<-rrcData(testthat::test_path("dataForTests", "TesteODS.ods"),
-                    s = ",", d = ".", h = TRUE, colsPdg = 1, colsTrts = 4:8,
-                    colsDts = NULL)
+  readFile<-rrcData(local = testthat::test_path("dataForTests", "TesteODS.ods"),
+                    s = ",", d = ".", h = TRUE, colsPdg = 3, colsTrts = 5:8,
+                    colsDts = 4)
 
   expect_equal(ncol(readFile), 8)
   expect_equal(nrow(readFile), 29)
@@ -55,9 +55,9 @@ test_that("reading files working ODS", {
 test_that("recoding is working", {
   unrecodedData<-read.csv(testthat::test_path("dataForTests", "DP-CA.csv"),
                     s = ",", d = ".", h = TRUE)
-  recodedData<-rrcData(testthat::test_path("dataForTests", "DP-CA.csv"),
-                       s = ",", d = ".", h = TRUE, colsPdg = 1, colsTrts = 4:8,
-                       colsDts = NULL)
+  recodedData<-rrcData(local = testthat::test_path("dataForTests", "DP-CA.csv"),
+                       s = ",", d = ".", h = TRUE, colsPdg = 3, colsTrts = 5:8,
+                       colsDts = 4)
 
   expect_equal(length(unrecodedData), length(recodedData))
   expect_equal(length(recodedData[,2]), length(unrecodedData[,2]))
