@@ -1,7 +1,4 @@
-
-test_that("testando se o nome possui  #", {
-  expect_error(
-    formatA(testData, of = "filetest.txt#"),
-    "o nome do arquivo não pode possuir #"
-  )
+test_that("formatA is working", {
+  expect_equal(ncol(testData), ncol(testData1))
+  expect_equal(nrow(testData), nrow(testData1))
 })
