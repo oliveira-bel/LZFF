@@ -19,5 +19,5 @@ formatA<-function(udata, omd = "0", of = "formatted_file", EoL = "\n"){
   }
 
   utils::write.table(udata, file = of, quote = FALSE, sep = " ",
-                     row.names = FALSE, col.names = FALSE, eol = EoL, na = omd,)
+                     row.names = FALSE, col.names = FALSE, eol = EoL, na = omd)
 }
