@@ -162,7 +162,7 @@ rrcPed<-function(pedigreeObj = NULL, isd = c(1, 2, 3), udata, colsPdgDat.isd = c
       }
     }
   }
-  rm(older, parents, young, dup, i, j)
+  suppressWarnings(rm(older, parents, young, dup, i, j))
 
   #Recoding
   mapaCod<-data.frame(cod = orderped$ind, recod = 1: nrow(orderped))
