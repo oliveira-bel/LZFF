@@ -10,11 +10,16 @@
 #'
 #' @return a formatted file.
 #' @examples
-#' #Creating a data
-#' y<-data.frame(id=c("id1","id2","id3","id4"),sire=c("s1","s2","s3","s4"),dam=c("d1","d2","d3","d4"),psn=c(10,12,13,16),pdm=c(1,5,8,9))
+#' #creating a data
+#' d<-data.frame(id = paste0("i", 1:5), sire = paste0("s", c(rep(1, 2), rep(2, 2), 3)),dam = paste0("d", 1:5), cg = gl(n = 2, k = 2, length = 5, labels = c("gc1", "gc2")),bwd = as.Date(c("2014-10-02", "2014-02-15", "2017-06-30", "2017-06-14", "2016-07-01"), format = "%Y-%m-%d"),trt1 = rnorm(5, 2, 2), trt2 = rnorm(5, 10, 3))
+#' p<- data.frame(id = paste0("i", 1:5), sire = paste0("s", c(rep(1, 2), rep(2, 2), 3)),dam = paste0("d", 1:5))
+#' m<-data.frame(id = paste0("i", 1:10), sire = paste0("s", c(rep(1, 2), rep(2, 2), 3)),dam = paste0("d", 1:10))
+#'
+#' #creating the data and pedigree list
+#' plist<-list(map=m,ped=p,data=d)
 #'
 #' #formatA data
-#' formatA(udata= y, omd = "0", of = "formatted_file", EoL = "\n")
+#' formatA(udata= plist$data, omd = "0", of = "formatted_file", EoL = "\n")
 #' unlink("formatted_file")
 #'
 #'
