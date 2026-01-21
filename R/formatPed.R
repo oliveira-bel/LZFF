@@ -14,11 +14,17 @@
 #' @returns a formatted pedigree file.
 #' @examples
 #' #creating a data
-#' x<-data.frame(id=c("id1","id2","id3","id4"),sire=c("s1","s2","s3","s4"),dam=c("d1","d2","d3","d4"))
+#' d<-data.frame(id = paste0("i", 1:5), sire = paste0("s", c(rep(1, 2), rep(2, 2), 3)),dam = paste0("d", 1:5), cg = gl(n = 2, k = 2, length = 5, labels = c("gc1", "gc2")),bwd = as.Date(c("2014-10-02", "2014-02-15", "2017-06-30", "2017-06-14", "2016-07-01"), format = "%Y-%m-%d"),trt1 = rnorm(5, 2, 2), trt2 = rnorm(5, 10, 3))
+#' p<-data.frame(id = paste0("i", 1:5), sire = paste0("s", c(rep(1, 2), rep(2, 2), 3)),dam = paste0("d", 1:5))
+#' m<-data.frame(id = paste0("i", 1:10), sire = paste0("s", c(rep(1, 2), rep(2, 2), 3)),dam = paste0("d", 1:10))
+#'
+#' #creating the data and pedigree list
+#' plist<-list(map=m,ped=p,data=d)
 #'
 #' #formatPed data
-#' formatPed(dataList = x, of = "pedigree.txt", mp = 0, s = " ", EoL = "\n",map = FALSE, mapof = "map.txt")
+#' formatPed(dataList = plist, of = "pedigree.txt", mp = 0, s = " ", EoL = "\n",map = FALSE, mapof = "map.txt")
 #'
+#'@export
 
 formatPed<-function(dataList, of = "pedigree.txt", mp = 0, s = " ", EoL = "\n",
                     map = FALSE, mapof = "map.txt"){
