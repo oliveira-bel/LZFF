@@ -13,6 +13,8 @@
 #'
 #' @returns a formatted data file.
 #' @export
+#'@examples
+
 #'
 formatB<-function(dataList, of = "formatB_data", omd = "-99999", traits = NULL,
                   widths = NULL, EoL = "\n"){
