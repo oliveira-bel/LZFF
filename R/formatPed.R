@@ -12,9 +12,14 @@
 #' @param mapof map output file's name
 #'
 #' @returns a formatted pedigree file.
-#' @export
-#'
 #' @examples
+#' #creating a data
+#' x<-data.frame(id=c("id1","id2","id3","id4"),sire=c("s1","s2","s3","s4"),dam=c("d1","d2","d3","d4"))
+#'
+#' #formatPed data
+#' formatPed(dataList = x, of = "pedigree.txt", mp = 0, s = " ", EoL = "\n",map = FALSE, mapof = "map.txt")
+#'
+
 formatPed<-function(dataList, of = "pedigree.txt", mp = 0, s = " ", EoL = "\n",
                     map = FALSE, mapof = "map.txt"){
 
